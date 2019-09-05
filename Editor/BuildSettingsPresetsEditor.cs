@@ -8,6 +8,7 @@ namespace Editor
     public class BuildSettingsPresetsEditor
     {
         private const string ROOT_FOLDER = "Assets";
+        private const string DEFAULT_NAME = "NewPreset";
 
         static BuildSettingsPresetsEditor()
         {
@@ -27,8 +28,19 @@ namespace Editor
             {
                 dirname = Path.Combine(Directory.GetParent(dirname).ToString(), "Presets");
             }
-            string path = Path.Combine(dirname, "NewPreset.asset");
-            
+
+            // Don't overwrite an existing preset
+            string path;
+            int suffix = 0;
+            do
+            {
+                string fileName = suffix == 0
+                    ? DEFAULT_NAME
+                    : DEFAULT_NAME + "(" + suffix + ")";
+                path = Path.Combine(dirname, fileName + ".asset");
+                ++suffix;
+            } while (File.Exists(path));
+
             AssetDatabase.CreateAsset(preset, path);
         }
     }
