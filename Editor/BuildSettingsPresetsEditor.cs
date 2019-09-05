@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Editor
 {
     [InitializeOnLoad]
-    public class BuildSettingsPresetsEditor
+    public class BuildSettingsPresetsEditor : AssetPostprocessor
     {
         private const string ROOT_FOLDER = "Assets";
         private const string DEFAULT_NAME = "NewPreset";
@@ -149,6 +149,11 @@ namespace Editor
 
         public static void ImportPreset(string presetGuid)
         {
+        }
+
+        static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+        {
+            RefreshPresetsList();
         }
     }
 }
