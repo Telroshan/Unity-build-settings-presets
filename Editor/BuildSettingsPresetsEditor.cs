@@ -142,6 +142,8 @@ namespace Editor
 
             AssetDatabase.CreateAsset(preset, path);
 
+            Selection.activeObject = preset;
+
             RefreshPresetsList();
         }
 
