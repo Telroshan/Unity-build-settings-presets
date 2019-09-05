@@ -9,18 +9,27 @@ namespace Editor
     {
         private const string ROOT_FOLDER = "Assets";
         private const string DEFAULT_NAME = "NewPreset";
-
+        
         static BuildSettingsPresetsEditor()
         {
-            Debug.Log("Initialization");
+            RefreshPresetsList();
+        }
+
+        [MenuItem("Build presets/Refresh")]
+        private static void RefreshPresetsList()
+        {
+            string[] guids = AssetDatabase.FindAssets("t:" + nameof(BuildSettingsPreset));
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                BuildSettingsPreset preset = AssetDatabase.LoadAssetAtPath<BuildSettingsPreset>(path);
+            }
         }
 
         [MenuItem("Build presets/New")]
         private static void AddPreset()
         {
-            Debug.Log("New preset !");
             BuildSettingsPreset preset = BuildSettingsPreset.FromCurrentSettings();
-            Debug.Log(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(preset)));
             string dirname =
                 Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(preset))) ??
                 ROOT_FOLDER;
@@ -42,6 +51,8 @@ namespace Editor
             } while (File.Exists(path));
 
             AssetDatabase.CreateAsset(preset, path);
+            
+            RefreshPresetsList();
         }
     }
 }
