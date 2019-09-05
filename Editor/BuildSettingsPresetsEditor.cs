@@ -8,6 +8,13 @@ namespace Editor
     {
         static BuildSettingsPresetsEditor()
         {
+            Debug.Log("Initialization");
+        }
+
+        [MenuItem("Build presets/New")]
+        private static void AddPreset()
+        {
+            Debug.Log("New preset !");
         }
     }
 }
