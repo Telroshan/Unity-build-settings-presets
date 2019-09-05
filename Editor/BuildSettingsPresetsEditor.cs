@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,11 +21,24 @@ namespace Editor
         private static void RefreshPresetsList()
         {
             string[] guids = AssetDatabase.FindAssets("t:" + nameof(BuildSettingsPreset));
+            Dictionary<string, string> presets = new Dictionary<string, string>();
+            Debug.Log(guids.Length + " presets found");
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 BuildSettingsPreset preset = AssetDatabase.LoadAssetAtPath<BuildSettingsPreset>(path);
+                presets.Add(guid, preset.name);
             }
+
+            if (!presets.Except(BuildSettingsPresetsMenuItems.presets).Any()
+            && !BuildSettingsPresetsMenuItems.presets.Except(presets).Any())
+            {
+                Debug.Log("No diff");
+                return;
+            }
+            
+            Debug.Log("Difference found, regenerating file...");
+            BuildSettingsPresetsMenuItems.presets = presets;
         }
 
         [MenuItem("Build presets/New")]
