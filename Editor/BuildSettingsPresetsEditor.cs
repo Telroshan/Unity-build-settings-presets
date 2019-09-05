@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,18 +12,27 @@ namespace Editor
     {
         private const string ROOT_FOLDER = "Assets";
         private const string DEFAULT_NAME = "NewPreset";
-        
+
         static BuildSettingsPresetsEditor()
         {
             RefreshPresetsList();
         }
 
-        [MenuItem("Build presets/Refresh")]
+        private static string GetAssetDirectory(BuildSettingsPreset preset = null)
+        {
+            if (preset == null)
+            {
+                preset = ScriptableObject.CreateInstance<BuildSettingsPreset>();
+            }
+
+            return Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(preset))) ??
+                   ROOT_FOLDER;
+        }
+
         private static void RefreshPresetsList()
         {
             string[] guids = AssetDatabase.FindAssets("t:" + nameof(BuildSettingsPreset));
             Dictionary<string, string> presets = new Dictionary<string, string>();
-            Debug.Log(guids.Length + " presets found");
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
@@ -31,23 +41,88 @@ namespace Editor
             }
 
             if (!presets.Except(BuildSettingsPresetsMenuItems.presets).Any()
-            && !BuildSettingsPresetsMenuItems.presets.Except(presets).Any())
+                && !BuildSettingsPresetsMenuItems.presets.Except(presets).Any())
             {
-                Debug.Log("No diff");
                 return;
             }
-            
-            Debug.Log("Difference found, regenerating file...");
-            BuildSettingsPresetsMenuItems.presets = presets;
+
+            string scriptPath = Path.Combine(Directory.GetCurrentDirectory(), GetAssetDirectory(),
+                nameof(BuildSettingsPresetsMenuItems) + ".cs");
+
+            StreamReader reading = File.OpenText(scriptPath);
+            string str;
+            bool inGeneratedSection = false;
+            string newFileContent = "";
+            while ((str = reading.ReadLine()) != null)
+            {
+                newFileContent += str + "\n";
+                if (str.Trim() == "#region GeneratedPresets")
+                {
+                    inGeneratedSection = true;
+                    break;
+                }
+            }
+
+            foreach (KeyValuePair<string, string> entry in presets)
+            {
+                string presetGuid = entry.Key;
+                string presetName = Regex.Replace(entry.Value, @"[()]", "");
+                newFileContent += "\t\t\t{ \"" + presetGuid + "\", \"" + presetName + "\" },\n";
+            }
+
+            while ((str = reading.ReadLine()) != null)
+            {
+                if (str.Trim() == "#endregion")
+                {
+                    newFileContent += str + "\n";
+                    inGeneratedSection = false;
+                    break;
+                }
+            }
+
+            while ((str = reading.ReadLine()) != null)
+            {
+                newFileContent += str + "\n";
+                if (str.Trim() == "#region GeneratedMenuItems")
+                {
+                    inGeneratedSection = true;
+                    break;
+                }
+            }
+
+            foreach (KeyValuePair<string, string> entry in presets)
+            {
+                string presetGuid = entry.Key;
+                string presetName = Regex.Replace(entry.Value, @"[()]", "");
+                newFileContent += "\t\t[MenuItem(\"Build presets/ > " + presetName + "\")]\n" +
+                                  "\t\tpublic static void Import" + presetGuid + "()\n" +
+                                  "\t\t{\n" +
+                                  "\t\t\tBuildSettingsPresetsEditor.ImportPreset(\"" + presetGuid + "\");\n" +
+                                  "\t\t}\n";
+            }
+
+            while ((str = reading.ReadLine()) != null)
+            {
+                if (inGeneratedSection && str.Trim() == "#endregion")
+                {
+                    inGeneratedSection = false;
+                }
+
+                if (!inGeneratedSection)
+                {
+                    newFileContent += str + "\n";
+                }
+            }
+
+            reading.Close();
+            File.WriteAllText(scriptPath, newFileContent);
         }
 
-        [MenuItem("Build presets/New")]
+        [MenuItem("Build presets/+ Create new preset")]
         private static void AddPreset()
         {
             BuildSettingsPreset preset = BuildSettingsPreset.FromCurrentSettings();
-            string dirname =
-                Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(preset))) ??
-                ROOT_FOLDER;
+            string dirname = GetAssetDirectory(preset);
             if (dirname != ROOT_FOLDER)
             {
                 dirname = Path.Combine(Directory.GetParent(dirname).ToString(), "Presets");
@@ -66,8 +141,12 @@ namespace Editor
             } while (File.Exists(path));
 
             AssetDatabase.CreateAsset(preset, path);
-            
+
             RefreshPresetsList();
+        }
+
+        public static void ImportPreset(string presetGuid)
+        {
         }
     }
 }

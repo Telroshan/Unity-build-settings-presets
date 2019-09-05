@@ -47,7 +47,7 @@ namespace Editor
 
         public static BuildSettingsPreset FromCurrentSettings()
         {
-            BuildSettingsPreset preset = ScriptableObject.CreateInstance<BuildSettingsPreset>();
+            BuildSettingsPreset preset = CreateInstance<BuildSettingsPreset>();
 
             preset.activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             preset.activeScriptCompilationDefines = EditorUserBuildSettings.activeScriptCompilationDefines;
