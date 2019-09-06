@@ -115,7 +115,7 @@ namespace Editor
             return preset;
         }
 
-        public void Import()
+        public void Apply()
         {
             EditorBuildSettings.scenes = scenes.Select(x => new EditorBuildSettingsScene()
             {

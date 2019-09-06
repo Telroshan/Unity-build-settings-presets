@@ -49,9 +49,9 @@ namespace Editor
             RefreshPresetsList();
         }
 
-        public static void ImportPreset(string presetGuid)
+        public static void ApplyPreset(string presetGuid)
         {
-            AssetDatabase.LoadAssetAtPath<BuildSettingsPreset>(AssetDatabase.GUIDToAssetPath(presetGuid)).Import();
+            AssetDatabase.LoadAssetAtPath<BuildSettingsPreset>(AssetDatabase.GUIDToAssetPath(presetGuid)).Apply();
         }
 
         #endregion
@@ -96,9 +96,9 @@ namespace Editor
                 string presetGuid = entry.Key;
                 string presetName = entry.Value;
                 return "\t\t[MenuItem(\"Build presets/" + presetName + "\")]\n" +
-                       "\t\tpublic static void Import" + presetGuid + "()\n" +
+                       "\t\tpublic static void Apply" + presetGuid + "()\n" +
                        "\t\t{\n" +
-                       "\t\t\t" + typeof(BuildSettingsPresetsManager).Name + ".ImportPreset(\"" + presetGuid + "\");\n" +
+                       "\t\t\t" + typeof(BuildSettingsPresetsManager).Name + "." + nameof(ApplyPreset) + "(\"" + presetGuid + "\");\n" +
                        "\t\t}\n";
             }));
             newFileContent = InsertInRegion(reader, newFileContent, menuItemsGenerated, "GeneratedMenuItems");

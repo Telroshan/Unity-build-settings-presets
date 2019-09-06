@@ -8,10 +8,10 @@ namespace Editor
     {
         public override void OnInspectorGUI()
         {
-            if (GUILayout.Button("Import"))
+            if (GUILayout.Button("Apply"))
             {
                 AssetDatabase.TryGetGUIDAndLocalFileIdentifier(target, out string guid, out long localId);
-                BuildSettingsPresetsManager.ImportPreset(guid);
+                BuildSettingsPresetsManager.ApplyPreset(guid);
             }
 
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);

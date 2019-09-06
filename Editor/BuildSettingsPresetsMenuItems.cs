@@ -24,9 +24,9 @@ namespace Editor
         #region GeneratedMenuItems
 
 		[MenuItem("Build presets/Default")]
-		public static void Importd42ad8b01c8a68846865607ee58cdd0e()
+		public static void Applyd42ad8b01c8a68846865607ee58cdd0e()
 		{
-			BuildSettingsPresetsManager.ImportPreset("d42ad8b01c8a68846865607ee58cdd0e");
+			BuildSettingsPresetsManager.ApplyPreset("d42ad8b01c8a68846865607ee58cdd0e");
 		}
 
         #endregion
