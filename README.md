@@ -1,3 +1,5 @@
+![icon_key](https://user-images.githubusercontent.com/19146183/64446487-365c2580-d0d9-11e9-9ead-8b964c73497c.png)
+
 # Unity build settings presets
 
 Tested on Unity 2019.2
