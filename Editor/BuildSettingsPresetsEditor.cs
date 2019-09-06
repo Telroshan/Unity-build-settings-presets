@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -29,8 +30,36 @@ namespace Editor
                    ROOT_FOLDER;
         }
 
+        private static string InsertInRegion(StreamReader reader, string currentContent, string contentToInsert,
+            string regionName)
+        {
+            string str;
+            while ((str = reader.ReadLine()) != null)
+            {
+                currentContent += str + "\n";
+                if (str.Trim() == "#region " + regionName)
+                {
+                    break;
+                }
+            }
+
+            currentContent += contentToInsert;
+
+            while ((str = reader.ReadLine()) != null)
+            {
+                if (str.Trim() == "#endregion")
+                {
+                    currentContent += str + "\n";
+                    break;
+                }
+            }
+
+            return currentContent;
+        }
+
         private static void RefreshPresetsList()
         {
+            // Get all the presets assets
             string[] guids = AssetDatabase.FindAssets("t:" + nameof(BuildSettingsPreset));
             Dictionary<string, string> presets = new Dictionary<string, string>();
             foreach (string guid in guids)
@@ -40,6 +69,7 @@ namespace Editor
                 presets.Add(guid, preset.name);
             }
 
+            // Don't refresh if nothing changed
             if (!presets.Except(BuildSettingsPresetsMenuItems.presets).Any()
                 && !BuildSettingsPresetsMenuItems.presets.Except(presets).Any())
             {
@@ -49,74 +79,39 @@ namespace Editor
             string scriptPath = Path.Combine(Directory.GetCurrentDirectory(), GetAssetDirectory(),
                 nameof(BuildSettingsPresetsMenuItems) + ".cs");
 
-            StreamReader reading = File.OpenText(scriptPath);
-            string str;
-            bool inGeneratedSection = false;
+            StreamReader reader = File.OpenText(scriptPath);
             string newFileContent = "";
-            while ((str = reading.ReadLine()) != null)
-            {
-                newFileContent += str + "\n";
-                if (str.Trim() == "#region GeneratedPresets")
-                {
-                    inGeneratedSection = true;
-                    break;
-                }
-            }
 
-            foreach (KeyValuePair<string, string> entry in presets)
+            string presetsGenerated = String.Join("", presets.Select(entry =>
             {
                 string presetGuid = entry.Key;
-                string presetName = Regex.Replace(entry.Value, @"[()]", "");
-                newFileContent += "\t\t\t{ \"" + presetGuid + "\", \"" + presetName + "\" },\n";
-            }
+                string presetName = entry.Value;
+                return "\t\t\t{ \"" + presetGuid + "\", \"" + presetName + "\" },\n";
+            }));
+            newFileContent = InsertInRegion(reader, newFileContent, presetsGenerated, "GeneratedPresets");
 
-            while ((str = reading.ReadLine()) != null)
-            {
-                if (str.Trim() == "#endregion")
-                {
-                    newFileContent += str + "\n";
-                    inGeneratedSection = false;
-                    break;
-                }
-            }
-
-            while ((str = reading.ReadLine()) != null)
-            {
-                newFileContent += str + "\n";
-                if (str.Trim() == "#region GeneratedMenuItems")
-                {
-                    inGeneratedSection = true;
-                    break;
-                }
-            }
-
-            foreach (KeyValuePair<string, string> entry in presets)
+            string menuItemsGenerated = String.Join("", presets.Select(entry =>
             {
                 string presetGuid = entry.Key;
-                string presetName = Regex.Replace(entry.Value, @"[()]", "");
-                newFileContent += "\t\t[MenuItem(\"Build presets/ > " + presetName + "\")]\n" +
-                                  "\t\tpublic static void Import" + presetGuid + "()\n" +
-                                  "\t\t{\n" +
-                                  "\t\t\tBuildSettingsPresetsEditor.ImportPreset(\"" + presetGuid + "\");\n" +
-                                  "\t\t}\n";
-            }
+                string presetName = entry.Value;
+                return "\t\t[MenuItem(\"Build presets/ > " + presetName + "\")]\n" +
+                       "\t\tpublic static void Import" + presetGuid + "()\n" +
+                       "\t\t{\n" +
+                       "\t\t\tBuildSettingsPresetsEditor.ImportPreset(\"" + presetGuid + "\");\n" +
+                       "\t\t}\n";
+            }));
+            newFileContent = InsertInRegion(reader, newFileContent, menuItemsGenerated, "GeneratedMenuItems");
 
-            while ((str = reading.ReadLine()) != null)
+            // Read the rest of the file
+            string str;
+            while ((str = reader.ReadLine()) != null)
             {
-                if (inGeneratedSection && str.Trim() == "#endregion")
-                {
-                    inGeneratedSection = false;
-                }
-
-                if (!inGeneratedSection)
-                {
-                    newFileContent += str + "\n";
-                }
+                newFileContent += str + "\n";
             }
 
-            reading.Close();
+            reader.Close();
             File.WriteAllText(scriptPath, newFileContent);
-            
+
             AssetDatabase.Refresh();
         }
 
@@ -153,7 +148,8 @@ namespace Editor
         {
         }
 
-        static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+        static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,
+            string[] movedFromAssetPaths)
         {
             RefreshPresetsList();
         }
