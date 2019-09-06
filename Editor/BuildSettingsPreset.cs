@@ -58,11 +58,9 @@ namespace Editor
         [SerializeField] private XboxOneDeployMethod xboxOneDeployMethod;
         [SerializeField] private bool xboxOneRebootIfDeployFailsAndRetry;
 
-        public static BuildSettingsPreset FromCurrentSettings()
+        public void OverwriteWithCurrentBuildSettings()
         {
-            BuildSettingsPreset preset = CreateInstance<BuildSettingsPreset>();
-
-            preset.scenes = EditorBuildSettings.scenes.Select(x => new BuildScene
+            scenes = EditorBuildSettings.scenes.Select(x => new BuildScene
                 {
                     scene = AssetDatabase.LoadAssetAtPath<SceneAsset>(x.path),
                     path = x.path,
@@ -71,46 +69,53 @@ namespace Editor
                 })
                 .ToArray();
 
-            preset.activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-            preset.activeScriptCompilationDefines =
+            activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
+            activeScriptCompilationDefines =
                 PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
-            preset.allowDebugging = EditorUserBuildSettings.allowDebugging;
-            preset.androidBuildSubtarget = EditorUserBuildSettings.androidBuildSubtarget;
-            preset.androidETC2Fallback = EditorUserBuildSettings.androidETC2Fallback;
-            preset.buildAppBundle = EditorUserBuildSettings.buildAppBundle;
-            preset.buildScriptsOnly = EditorUserBuildSettings.buildScriptsOnly;
-            preset.compressFilesInPackage = EditorUserBuildSettings.compressFilesInPackage;
-            preset.compressWithPsArc = EditorUserBuildSettings.compressWithPsArc;
-            preset.connectProfiler = EditorUserBuildSettings.connectProfiler;
-            preset.development = EditorUserBuildSettings.development;
-            preset.enableHeadlessMode = EditorUserBuildSettings.enableHeadlessMode;
-            preset.explicitArrayBoundsChecks = EditorUserBuildSettings.explicitArrayBoundsChecks;
-            preset.explicitDivideByZeroChecks = EditorUserBuildSettings.explicitDivideByZeroChecks;
-            preset.explicitNullChecks = EditorUserBuildSettings.explicitNullChecks;
-            preset.exportAsGoogleAndroidProject = EditorUserBuildSettings.exportAsGoogleAndroidProject;
-            preset.forceInstallation = EditorUserBuildSettings.forceInstallation;
-            preset.installInBuildFolder = EditorUserBuildSettings.installInBuildFolder;
-            preset.iOSBuildConfigType = EditorUserBuildSettings.iOSBuildConfigType;
-            preset.movePackageToDiscOuterEdge = EditorUserBuildSettings.movePackageToDiscOuterEdge;
-            preset.needSubmissionMaterials = EditorUserBuildSettings.needSubmissionMaterials;
-            preset.ps4BuildSubtarget = EditorUserBuildSettings.ps4BuildSubtarget;
-            preset.ps4HardwareTarget = EditorUserBuildSettings.ps4HardwareTarget;
-            preset.selectedBuildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
-            preset.selectedStandaloneTarget = EditorUserBuildSettings.selectedStandaloneTarget;
-            preset.streamingInstallLaunchRange = EditorUserBuildSettings.streamingInstallLaunchRange;
-            preset.symlinkLibraries = EditorUserBuildSettings.symlinkLibraries;
-            preset.waitForPlayerConnection = EditorUserBuildSettings.waitForPlayerConnection;
-            preset.windowsDevicePortalAddress = EditorUserBuildSettings.windowsDevicePortalAddress;
-            preset.windowsDevicePortalPassword = EditorUserBuildSettings.windowsDevicePortalPassword;
-            preset.windowsDevicePortalUsername = EditorUserBuildSettings.windowsDevicePortalUsername;
-            preset.wsaBuildAndRunDeployTarget = EditorUserBuildSettings.wsaBuildAndRunDeployTarget;
-            preset.wsaSubtarget = EditorUserBuildSettings.wsaSubtarget;
-            preset.wsaUWPSDK = EditorUserBuildSettings.wsaUWPSDK;
-            preset.wsaUWPVisualStudioVersion = EditorUserBuildSettings.wsaUWPVisualStudioVersion;
-            preset.xboxBuildSubtarget = EditorUserBuildSettings.xboxBuildSubtarget;
-            preset.xboxOneDeployDrive = EditorUserBuildSettings.xboxOneDeployDrive;
-            preset.xboxOneDeployMethod = EditorUserBuildSettings.xboxOneDeployMethod;
-            preset.xboxOneRebootIfDeployFailsAndRetry = EditorUserBuildSettings.xboxOneRebootIfDeployFailsAndRetry;
+            allowDebugging = EditorUserBuildSettings.allowDebugging;
+            androidBuildSubtarget = EditorUserBuildSettings.androidBuildSubtarget;
+            androidETC2Fallback = EditorUserBuildSettings.androidETC2Fallback;
+            buildAppBundle = EditorUserBuildSettings.buildAppBundle;
+            buildScriptsOnly = EditorUserBuildSettings.buildScriptsOnly;
+            compressFilesInPackage = EditorUserBuildSettings.compressFilesInPackage;
+            compressWithPsArc = EditorUserBuildSettings.compressWithPsArc;
+            connectProfiler = EditorUserBuildSettings.connectProfiler;
+            development = EditorUserBuildSettings.development;
+            enableHeadlessMode = EditorUserBuildSettings.enableHeadlessMode;
+            explicitArrayBoundsChecks = EditorUserBuildSettings.explicitArrayBoundsChecks;
+            explicitDivideByZeroChecks = EditorUserBuildSettings.explicitDivideByZeroChecks;
+            explicitNullChecks = EditorUserBuildSettings.explicitNullChecks;
+            exportAsGoogleAndroidProject = EditorUserBuildSettings.exportAsGoogleAndroidProject;
+            forceInstallation = EditorUserBuildSettings.forceInstallation;
+            installInBuildFolder = EditorUserBuildSettings.installInBuildFolder;
+            iOSBuildConfigType = EditorUserBuildSettings.iOSBuildConfigType;
+            movePackageToDiscOuterEdge = EditorUserBuildSettings.movePackageToDiscOuterEdge;
+            needSubmissionMaterials = EditorUserBuildSettings.needSubmissionMaterials;
+            ps4BuildSubtarget = EditorUserBuildSettings.ps4BuildSubtarget;
+            ps4HardwareTarget = EditorUserBuildSettings.ps4HardwareTarget;
+            selectedBuildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+            selectedStandaloneTarget = EditorUserBuildSettings.selectedStandaloneTarget;
+            streamingInstallLaunchRange = EditorUserBuildSettings.streamingInstallLaunchRange;
+            symlinkLibraries = EditorUserBuildSettings.symlinkLibraries;
+            waitForPlayerConnection = EditorUserBuildSettings.waitForPlayerConnection;
+            windowsDevicePortalAddress = EditorUserBuildSettings.windowsDevicePortalAddress;
+            windowsDevicePortalPassword = EditorUserBuildSettings.windowsDevicePortalPassword;
+            windowsDevicePortalUsername = EditorUserBuildSettings.windowsDevicePortalUsername;
+            wsaBuildAndRunDeployTarget = EditorUserBuildSettings.wsaBuildAndRunDeployTarget;
+            wsaSubtarget = EditorUserBuildSettings.wsaSubtarget;
+            wsaUWPSDK = EditorUserBuildSettings.wsaUWPSDK;
+            wsaUWPVisualStudioVersion = EditorUserBuildSettings.wsaUWPVisualStudioVersion;
+            xboxBuildSubtarget = EditorUserBuildSettings.xboxBuildSubtarget;
+            xboxOneDeployDrive = EditorUserBuildSettings.xboxOneDeployDrive;
+            xboxOneDeployMethod = EditorUserBuildSettings.xboxOneDeployMethod;
+            xboxOneRebootIfDeployFailsAndRetry = EditorUserBuildSettings.xboxOneRebootIfDeployFailsAndRetry;
+        }
+        
+        public static BuildSettingsPreset FromCurrentSettings()
+        {
+            BuildSettingsPreset preset = CreateInstance<BuildSettingsPreset>();
+            
+            preset.OverwriteWithCurrentBuildSettings();
 
             return preset;
         }
