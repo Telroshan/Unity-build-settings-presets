@@ -13,7 +13,7 @@ You should now have a `Build presets` menu in the menu toolbar.
 ![image](https://user-images.githubusercontent.com/19146183/64428975-46620e00-d0b5-11e9-8752-e544654a8ff4.png)
 
 ## How to use
-### Create preset
+### 1 - Create preset
 Click on `+ New (from current settings)` to create a new preset.
 
 ![image](https://user-images.githubusercontent.com/19146183/64429643-b91fb900-d0b6-11e9-84ad-6bb1d3f42ed9.png)
@@ -24,7 +24,7 @@ _Note2 : you can also duplicate an existing preset and start working with it_
 
 Presets are stored as assets in the `Unity-build-settings-presets/Presets folder`. You'll find a `Default` preset there, which just contains the basic build settings for standalone, you can remove it safely if you don't need it.
 
-### Edit preset
+### 2 - Edit preset
 Select a preset to view its properties in the inspector.
 
 ![image](https://user-images.githubusercontent.com/19146183/64432085-1b2eed00-d0bc-11e9-8139-aeac76a125bd.png)
@@ -37,7 +37,7 @@ You can also click on the "Overwrite with current build settings" button to repl
 
 ![image](https://user-images.githubusercontent.com/19146183/64432161-3ef23300-d0bc-11e9-8018-eb8c11b91f80.png)
 
-### Apply preset
+### 3 - Apply preset
 #### Via the menu bar
 You can apply a preset (thus replacing your current build settings by the preset's properties) by clicking on its name in the menu bar
 
