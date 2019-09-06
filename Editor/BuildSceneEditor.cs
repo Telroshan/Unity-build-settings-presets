@@ -22,11 +22,17 @@ namespace Editor
             EditorGUI.PropertyField(enabledRect,
                 property.FindPropertyRelative(nameof(BuildSettingsPreset.BuildScene.enabled)), GUIContent.none);
 
-            // Scene is read-only
-            GUI.enabled = false;
-            EditorGUI.PropertyField(sceneRect,
-                property.FindPropertyRelative(nameof(BuildSettingsPreset.BuildScene.scene)), GUIContent.none);
-            GUI.enabled = true;
+            EditorGUI.BeginChangeCheck();
+            SerializedProperty sceneProperty =
+                property.FindPropertyRelative(nameof(BuildSettingsPreset.BuildScene.scene));
+            EditorGUI.PropertyField(sceneRect, sceneProperty, GUIContent.none);
+            if (EditorGUI.EndChangeCheck())
+            {
+                string path = AssetDatabase.GetAssetPath(sceneProperty.objectReferenceValue);
+                property.FindPropertyRelative(nameof(BuildSettingsPreset.BuildScene.path)).stringValue = path;
+                property.FindPropertyRelative(nameof(BuildSettingsPreset.BuildScene.guid)).stringValue =
+                    AssetDatabase.AssetPathToGUID(path);
+            }
 
             EditorGUI.indentLevel = indent;
 

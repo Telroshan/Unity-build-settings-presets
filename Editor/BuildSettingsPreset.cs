@@ -11,7 +11,7 @@ namespace Editor
         public class BuildScene
         {
             public SceneAsset scene;
-            public GUID guid;
+            public string guid;
             public string path;
             public bool enabled;
         }
@@ -66,11 +66,11 @@ namespace Editor
                 {
                     scene = AssetDatabase.LoadAssetAtPath<SceneAsset>(x.path),
                     path = x.path,
-                    guid = x.guid,
+                    guid = x.guid.ToString(),
                     enabled = x.enabled,
                 })
                 .ToArray();
-            
+
             preset.activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             preset.activeScriptCompilationDefines =
                 PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
@@ -119,7 +119,7 @@ namespace Editor
         {
             EditorBuildSettings.scenes = scenes.Select(x => new EditorBuildSettingsScene()
             {
-                guid = x.guid,
+                guid = new GUID(x.guid),
                 path = x.path,
                 enabled = x.enabled,
             }).ToArray();
