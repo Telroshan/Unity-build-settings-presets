@@ -71,8 +71,8 @@ namespace Editor
             }
 
             // Don't refresh if nothing changed
-            if (!presets.Except(BuildSettingsPresetsMenuItems.presets).Any()
-                && !BuildSettingsPresetsMenuItems.presets.Except(presets).Any())
+            if (!presets.Except(BuildSettingsPresetsMenuItems.Presets).Any()
+                && !BuildSettingsPresetsMenuItems.Presets.Except(presets).Any())
             {
                 return;
             }
