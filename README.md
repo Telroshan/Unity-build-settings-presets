@@ -1,5 +1,7 @@
 # Unity build settings presets
 
+Tested on Unity 2019.2
+
 This asset lets you save build settings presets in Unity and switch easily between them.
 
 On a project, I needed 2 different standalone builds (a client build, and a server build), with different settings, different scene lists and different script compilation defines. It was pretty boring to manually change those settings each time I'd want to build my game, so here came the Unity build settings presets system.
