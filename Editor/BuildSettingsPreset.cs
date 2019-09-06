@@ -1,10 +1,22 @@
-﻿using UnityEditor;
+﻿using System;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace Editor
 {
     public class BuildSettingsPreset : ScriptableObject
     {
+        [Serializable]
+        public class BuildScene
+        {
+            public SceneAsset scene;
+            [HideInInspector] public UnityEditor.GUID guid;
+            [HideInInspector] public string path;
+            public bool enabled;
+        }
+
+        public BuildScene[] scenes;
         public BuildTarget activeBuildTarget;
         public string activeScriptCompilationDefines;
         public bool allowDebugging;
@@ -49,6 +61,14 @@ namespace Editor
         {
             BuildSettingsPreset preset = CreateInstance<BuildSettingsPreset>();
 
+            preset.scenes = EditorBuildSettings.scenes.Select(x => new BuildScene
+                {
+                    scene = AssetDatabase.LoadAssetAtPath<SceneAsset>(x.path),
+                    path = x.path,
+                    guid = x.guid,
+                    enabled = x.enabled,
+                })
+                .ToArray();
             preset.activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             preset.activeScriptCompilationDefines =
                 PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
@@ -95,6 +115,12 @@ namespace Editor
 
         public void Import()
         {
+            EditorBuildSettings.scenes = scenes.Select(x => new EditorBuildSettingsScene()
+            {
+                guid = x.guid,
+                path = x.path,
+                enabled = x.enabled,
+            }).ToArray();
             EditorUserBuildSettings.SwitchActiveBuildTarget(selectedBuildTargetGroup, activeBuildTarget);
             PlayerSettings.SetScriptingDefineSymbolsForGroup(selectedBuildTargetGroup, activeScriptCompilationDefines);
             EditorUserBuildSettings.allowDebugging = allowDebugging;
