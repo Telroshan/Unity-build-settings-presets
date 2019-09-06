@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,43 +18,44 @@ namespace Editor
             RefreshPresetsList();
         }
 
-        private static string GetAssetDirectory(BuildSettingsPreset preset = null)
+        #region Presets actions
+
+        [MenuItem("Build presets/+ Create new preset")]
+        private static void AddPreset()
         {
-            if (preset == null)
+            BuildSettingsPreset preset = BuildSettingsPreset.FromCurrentSettings();
+            string dirname = GetCurrentDirectory(preset);
+            if (dirname != ROOT_FOLDER)
             {
-                preset = ScriptableObject.CreateInstance<BuildSettingsPreset>();
+                dirname = Path.Combine(Directory.GetParent(dirname).ToString(), "Presets");
             }
 
-            return Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(preset))) ??
-                   ROOT_FOLDER;
+            // Don't overwrite an existing preset
+            string path;
+            int suffix = 0;
+            do
+            {
+                string fileName = suffix == 0
+                    ? DEFAULT_NAME
+                    : DEFAULT_NAME + "(" + suffix + ")";
+                path = Path.Combine(dirname, fileName + ".asset");
+                ++suffix;
+            } while (File.Exists(path));
+
+            AssetDatabase.CreateAsset(preset, path);
+
+            Selection.activeObject = preset;
+
+            RefreshPresetsList();
         }
 
-        private static string InsertInRegion(StreamReader reader, string currentContent, string contentToInsert,
-            string regionName)
+        public static void ImportPreset(string presetGuid)
         {
-            string str;
-            while ((str = reader.ReadLine()) != null)
-            {
-                currentContent += str + "\n";
-                if (str.Trim() == "#region " + regionName)
-                {
-                    break;
-                }
-            }
-
-            currentContent += contentToInsert;
-
-            while ((str = reader.ReadLine()) != null)
-            {
-                if (str.Trim() == "#endregion")
-                {
-                    currentContent += str + "\n";
-                    break;
-                }
-            }
-
-            return currentContent;
         }
+
+        #endregion
+
+        #region Code generation
 
         private static void RefreshPresetsList()
         {
@@ -76,7 +76,7 @@ namespace Editor
                 return;
             }
 
-            string scriptPath = Path.Combine(Directory.GetCurrentDirectory(), GetAssetDirectory(),
+            string scriptPath = Path.Combine(Directory.GetCurrentDirectory(), GetCurrentDirectory(),
                 nameof(BuildSettingsPresetsMenuItems) + ".cs");
 
             StreamReader reader = File.OpenText(scriptPath);
@@ -115,37 +115,44 @@ namespace Editor
             AssetDatabase.Refresh();
         }
 
-        [MenuItem("Build presets/+ Create new preset")]
-        private static void AddPreset()
+        private static string InsertInRegion(StreamReader reader, string currentContent, string contentToInsert,
+            string regionName)
         {
-            BuildSettingsPreset preset = BuildSettingsPreset.FromCurrentSettings();
-            string dirname = GetAssetDirectory(preset);
-            if (dirname != ROOT_FOLDER)
+            string str;
+            while ((str = reader.ReadLine()) != null)
             {
-                dirname = Path.Combine(Directory.GetParent(dirname).ToString(), "Presets");
+                currentContent += str + "\n";
+                if (str.Trim() == "#region " + regionName)
+                {
+                    break;
+                }
             }
 
-            // Don't overwrite an existing preset
-            string path;
-            int suffix = 0;
-            do
+            currentContent += contentToInsert;
+
+            while ((str = reader.ReadLine()) != null)
             {
-                string fileName = suffix == 0
-                    ? DEFAULT_NAME
-                    : DEFAULT_NAME + "(" + suffix + ")";
-                path = Path.Combine(dirname, fileName + ".asset");
-                ++suffix;
-            } while (File.Exists(path));
+                if (str.Trim() == "#endregion")
+                {
+                    currentContent += str + "\n";
+                    break;
+                }
+            }
 
-            AssetDatabase.CreateAsset(preset, path);
-
-            Selection.activeObject = preset;
-
-            RefreshPresetsList();
+            return currentContent;
         }
 
-        public static void ImportPreset(string presetGuid)
+        #endregion
+
+        private static string GetCurrentDirectory(BuildSettingsPreset preset = null)
         {
+            if (preset == null)
+            {
+                preset = ScriptableObject.CreateInstance<BuildSettingsPreset>();
+            }
+
+            return Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(preset))) ??
+                   ROOT_FOLDER;
         }
 
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,
