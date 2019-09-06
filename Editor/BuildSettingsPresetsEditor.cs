@@ -20,7 +20,7 @@ namespace Editor
 
         #region Presets actions
 
-        [MenuItem("Build presets/+ Create new preset")]
+        [MenuItem("Build presets/+ New (from current settings)")]
         private static void AddPreset()
         {
             BuildSettingsPreset preset = BuildSettingsPreset.FromCurrentSettings();
@@ -95,7 +95,7 @@ namespace Editor
             {
                 string presetGuid = entry.Key;
                 string presetName = entry.Value;
-                return "\t\t[MenuItem(\"Build presets/ > " + presetName + "\")]\n" +
+                return "\t\t[MenuItem(\"Build presets/" + presetName + "\")]\n" +
                        "\t\tpublic static void Import" + presetGuid + "()\n" +
                        "\t\t{\n" +
                        "\t\t\tBuildSettingsPresetsEditor.ImportPreset(\"" + presetGuid + "\");\n" +
