@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db85cc5ac7b3ec748a78a2f5cadc0624, type: 3}
+  m_Name: Default
+  m_EditorClassIdentifier: 
+  scenes: []
+  activeBuildTarget: 5
+  activeScriptCompilationDefines: 
+  allowDebugging: 0
+  androidBuildSubtarget: 0
+  androidETC2Fallback: 0
+  buildAppBundle: 0
+  buildScriptsOnly: 0
+  compressFilesInPackage: 0
+  compressWithPsArc: 0
+  connectProfiler: 0
+  development: 0
+  enableHeadlessMode: 0
+  explicitArrayBoundsChecks: 0
+  explicitDivideByZeroChecks: 0
+  explicitNullChecks: 0
+  exportAsGoogleAndroidProject: 0
+  forceInstallation: 0
+  installInBuildFolder: 0
+  iOSBuildConfigType: 1
+  movePackageToDiscOuterEdge: 0
+  needSubmissionMaterials: 0
+  ps4BuildSubtarget: 0
+  ps4HardwareTarget: 1
+  selectedBuildTargetGroup: 1
+  selectedStandaloneTarget: 5
+  streamingInstallLaunchRange: 0
+  symlinkLibraries: 0
+  waitForPlayerConnection: 0
+  windowsDevicePortalAddress: 
+  windowsDevicePortalPassword: 
+  windowsDevicePortalUsername: 
+  wsaBuildAndRunDeployTarget: 0
+  wsaSubtarget: 0
+  wsaUWPSDK: 
+  wsaUWPVisualStudioVersion: 
+  xboxBuildSubtarget: 0
+  xboxOneDeployDrive: 0
+  xboxOneDeployMethod: 0
+  xboxOneRebootIfDeployFailsAndRetry: 0
