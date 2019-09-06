@@ -11,12 +11,13 @@ namespace Editor
         public class BuildScene
         {
             public SceneAsset scene;
-            [HideInInspector] public GUID guid;
-            [HideInInspector] public string path;
+            public GUID guid;
+            public string path;
             public bool enabled;
         }
-
+        
         [SerializeField] private BuildScene[] scenes;
+        
         [SerializeField] private BuildTarget activeBuildTarget;
         [SerializeField] private string activeScriptCompilationDefines;
         [SerializeField] private bool allowDebugging;
@@ -69,6 +70,7 @@ namespace Editor
                     enabled = x.enabled,
                 })
                 .ToArray();
+            
             preset.activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             preset.activeScriptCompilationDefines =
                 PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
@@ -121,6 +123,7 @@ namespace Editor
                 path = x.path,
                 enabled = x.enabled,
             }).ToArray();
+            
             EditorUserBuildSettings.SwitchActiveBuildTarget(selectedBuildTargetGroup, activeBuildTarget);
             PlayerSettings.SetScriptingDefineSymbolsForGroup(selectedBuildTargetGroup, activeScriptCompilationDefines);
             EditorUserBuildSettings.allowDebugging = allowDebugging;
