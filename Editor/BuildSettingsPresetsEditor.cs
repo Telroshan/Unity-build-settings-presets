@@ -116,6 +116,8 @@ namespace Editor
 
             reading.Close();
             File.WriteAllText(scriptPath, newFileContent);
+            
+            AssetDatabase.Refresh();
         }
 
         [MenuItem("Build presets/+ Create new preset")]
