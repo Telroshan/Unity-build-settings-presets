@@ -8,12 +8,12 @@ using UnityEngine;
 namespace Editor
 {
     [InitializeOnLoad]
-    public class BuildSettingsPresetsEditor : AssetPostprocessor
+    public class BuildSettingsPresetsManager : AssetPostprocessor
     {
         private const string ROOT_FOLDER = "Assets";
         private const string DEFAULT_NAME = "NewPreset";
 
-        static BuildSettingsPresetsEditor()
+        static BuildSettingsPresetsManager()
         {
             RefreshPresetsList();
         }
@@ -98,7 +98,7 @@ namespace Editor
                 return "\t\t[MenuItem(\"Build presets/" + presetName + "\")]\n" +
                        "\t\tpublic static void Import" + presetGuid + "()\n" +
                        "\t\t{\n" +
-                       "\t\t\tBuildSettingsPresetsEditor.ImportPreset(\"" + presetGuid + "\");\n" +
+                       "\t\t\t" + typeof(BuildSettingsPresetsManager).Name + ".ImportPreset(\"" + presetGuid + "\");\n" +
                        "\t\t}\n";
             }));
             newFileContent = InsertInRegion(reader, newFileContent, menuItemsGenerated, "GeneratedMenuItems");
