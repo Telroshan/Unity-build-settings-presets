@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace BuildSettingsPresets
 {
     public class BuildSettingsPreset : ScriptableObject
     {

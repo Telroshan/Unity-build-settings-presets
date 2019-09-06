@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace BuildSettingsPresets
 {
     [CustomPropertyDrawer(typeof(BuildSettingsPreset.BuildScene))]
     public class BuildSceneEditor : PropertyDrawer

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace Editor
+namespace BuildSettingsPresets
 {
     public static class BuildSettingsPresetsMenuItems
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace BuildSettingsPresets
 {
     [CustomEditor(typeof(BuildSettingsPreset))]
     public class BuildSettingsPresetEditor : UnityEditor.Editor
@@ -10,7 +10,7 @@ namespace Editor
         {
             if (GUILayout.Button("Apply settings"))
             {
-                AssetDatabase.TryGetGUIDAndLocalFileIdentifier(target, out string guid, out long localId);
+                AssetDatabase.TryGetGUIDAndLocalFileIdentifier(target, out string guid, out long _);
                 BuildSettingsPresetsManager.ApplyPreset(guid);
             }
             
