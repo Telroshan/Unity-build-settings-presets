@@ -6,7 +6,7 @@ namespace Editor
     public class BuildSettingsPreset : ScriptableObject
     {
         public BuildTarget activeBuildTarget;
-        public string[] activeScriptCompilationDefines;
+        public string activeScriptCompilationDefines;
         public bool allowDebugging;
         public MobileTextureSubtarget androidBuildSubtarget;
         public AndroidETC2Fallback androidETC2Fallback;
@@ -50,7 +50,8 @@ namespace Editor
             BuildSettingsPreset preset = CreateInstance<BuildSettingsPreset>();
 
             preset.activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-            preset.activeScriptCompilationDefines = EditorUserBuildSettings.activeScriptCompilationDefines;
+            preset.activeScriptCompilationDefines =
+                PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
             preset.allowDebugging = EditorUserBuildSettings.allowDebugging;
             preset.androidBuildSubtarget = EditorUserBuildSettings.androidBuildSubtarget;
             preset.androidETC2Fallback = EditorUserBuildSettings.androidETC2Fallback;
@@ -95,8 +96,7 @@ namespace Editor
         public void Import()
         {
             EditorUserBuildSettings.SwitchActiveBuildTarget(selectedBuildTargetGroup, activeBuildTarget);
-            // TODO : defines
-//            EditorUserBuildSettings.activeScriptCompilationDefines = activeScriptCompilationDefines;
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(selectedBuildTargetGroup, activeScriptCompilationDefines);
             EditorUserBuildSettings.allowDebugging = allowDebugging;
             EditorUserBuildSettings.androidBuildSubtarget = androidBuildSubtarget;
             EditorUserBuildSettings.androidETC2Fallback = androidETC2Fallback;
