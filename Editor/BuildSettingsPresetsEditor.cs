@@ -87,11 +87,11 @@ namespace Editor
             {
                 string presetGuid = entry.Key;
                 string presetName = entry.Value;
-                return "\t\t\t{ \"" + presetGuid + "\", \"" + presetName + "\" },\n";
+                return "\t\t\t{\"" + presetGuid + "\", \"" + presetName + "\"},\n";
             }));
             newFileContent = InsertInRegion(reader, newFileContent, presetsGenerated, "GeneratedPresets");
 
-            string menuItemsGenerated = String.Join("", presets.Select(entry =>
+            string menuItemsGenerated = String.Join("\n", presets.Select(entry =>
             {
                 string presetGuid = entry.Key;
                 string presetName = entry.Value;
@@ -125,6 +125,7 @@ namespace Editor
                 currentContent += str + "\n";
                 if (str.Trim() == "#region " + regionName)
                 {
+                    currentContent += "\n";
                     break;
                 }
             }
@@ -135,7 +136,7 @@ namespace Editor
             {
                 if (str.Trim() == "#endregion")
                 {
-                    currentContent += str + "\n";
+                    currentContent += "\n" + str + "\n";
                     break;
                 }
             }
