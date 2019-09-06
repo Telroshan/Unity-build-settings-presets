@@ -51,6 +51,7 @@ namespace Editor
 
         public static void ImportPreset(string presetGuid)
         {
+            AssetDatabase.LoadAssetAtPath<BuildSettingsPreset>(AssetDatabase.GUIDToAssetPath(presetGuid)).Import();
         }
 
         #endregion
