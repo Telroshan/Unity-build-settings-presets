@@ -52,6 +52,8 @@ namespace BuildSettingsPresets
         public static void ApplyPreset(string presetGuid)
         {
             AssetDatabase.LoadAssetAtPath<BuildSettingsPreset>(AssetDatabase.GUIDToAssetPath(presetGuid)).Apply();
+            
+            UpdateCsProj();
         }
 
         #endregion
@@ -98,7 +100,8 @@ namespace BuildSettingsPresets
                 return "\t\t[MenuItem(\"Build presets/" + presetName + "\")]\n" +
                        "\t\tpublic static void Apply" + presetGuid + "()\n" +
                        "\t\t{\n" +
-                       "\t\t\t" + typeof(BuildSettingsPresetsManager).Name + "." + nameof(ApplyPreset) + "(\"" + presetGuid + "\");\n" +
+                       "\t\t\t" + typeof(BuildSettingsPresetsManager).Name + "." + nameof(ApplyPreset) + "(\"" +
+                       presetGuid + "\");\n" +
                        "\t\t}\n";
             }));
             newFileContent = InsertInRegion(reader, newFileContent, menuItemsGenerated, "GeneratedMenuItems");
@@ -114,6 +117,32 @@ namespace BuildSettingsPresets
             File.WriteAllText(scriptPath, newFileContent);
 
             AssetDatabase.Refresh();
+        }
+
+        /// <summary>
+        /// I noticed with several tests, that sometimes Unity doesn't automatically update the DefineConstants
+        /// in the csproj file... Resulting in wrong display in IDEs like Rider
+        /// </summary>
+        private static void UpdateCsProj()
+        {
+            string csProjPath = Path.Combine(Directory.GetCurrentDirectory(), "Assembly-CSharp.csproj");
+            if (!File.Exists(csProjPath)) return;
+
+            string csProjContent = File.ReadAllText(csProjPath);
+            string tag = "DefineConstants";
+            string openTag = $"<{tag}>";
+            int startIndex = csProjContent.IndexOf(openTag, StringComparison.Ordinal) + openTag.Length;
+            int length = csProjContent.IndexOf($"</{tag}", StringComparison.Ordinal) - startIndex;
+
+            string savedDefineConstants = csProjContent.Substring(startIndex, length);
+
+            string currentDefineConstants = string.Join(";", PlayerSettings
+                .GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';')
+                .Concat(EditorUserBuildSettings.activeScriptCompilationDefines)
+                .Distinct());
+
+            csProjContent = csProjContent.Replace(savedDefineConstants, currentDefineConstants);
+            File.WriteAllText(csProjPath, csProjContent);
         }
 
         private static string InsertInRegion(StreamReader reader, string currentContent, string contentToInsert,
