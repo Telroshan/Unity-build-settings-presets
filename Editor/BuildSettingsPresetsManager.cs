@@ -54,6 +54,8 @@ namespace BuildSettingsPresets
             AssetDatabase.LoadAssetAtPath<BuildSettingsPreset>(AssetDatabase.GUIDToAssetPath(presetGuid)).Apply();
             
             UpdateCsProj();
+            
+            EditorApplication.ExecuteMenuItem("File/Save Project");
         }
 
         #endregion
