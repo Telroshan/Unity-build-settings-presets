@@ -17,6 +17,7 @@ namespace BuildSettingsPresets
             if (GUILayout.Button("Overwrite with current build settings"))
             {
                 ((BuildSettingsPreset)target).OverwriteWithCurrentBuildSettings();
+                EditorUtility.SetDirty(target);
             }
 
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
