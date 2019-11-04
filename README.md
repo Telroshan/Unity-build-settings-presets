@@ -7,8 +7,11 @@ This asset lets you save build settings presets in Unity and switch easily betwe
 On a project, I needed 2 different standalone builds (a client build, and a server build), with different settings, different scene lists and different script compilation defines. It was pretty boring to manually change those settings each time I'd want to build my game, so here came the Unity build settings presets system.
 
 ## Install
+### Unity package (easiest)
+Simply [download the unity package file in the releases](https://github.com/Telroshan/Unity-build-settings-presets/releases/download/1.1/BuildSettingsPresets.unitypackage) and double click it (or import it in Unity)
+### Or clone the repo
+[Download this repo](https://github.com/Telroshan/Unity-build-settings-presets/archive/master.zip) and place it in your Unity project's Assets folder.
 
-Simply download this repo and place it in your Unity project's Assets folder.
 
 You should now have a `Build presets` menu in the menu toolbar.
 
