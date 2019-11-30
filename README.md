@@ -54,4 +54,4 @@ In the preset inspector, you can also click the `Apply` button to get the same r
 ![image](https://user-images.githubusercontent.com/19146183/64432238-6fd26800-d0bc-11e9-927f-8cc24ffc6a71.png)
 
 # License
-This repo is [MIT licensed](https://github.com/Telroshan/Unity-build-settings-presets/blob/master/LICENSE).
+This repo is [MIT licensed](https://github.com/Telroshan/Unity-build-settings-presets/blob/master/LICENSE.md).
