@@ -1,6 +1,6 @@
 # Unity build settings presets
 
-Tested on Unity 2019.2
+_Tested on Unity 2019.2_
 
 This asset lets you save build settings presets in Unity and switch easily between them.
 
