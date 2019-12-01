@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace BuildSettingsPresets
+namespace TelroshanTools.BuildSettingsPresets.Editor
 {
     [CustomEditor(typeof(BuildSettingsPreset))]
     public class BuildSettingsPresetEditor : UnityEditor.Editor

@@ -5,13 +5,13 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace BuildSettingsPresets
+namespace TelroshanTools.BuildSettingsPresets.Editor
 {
     [InitializeOnLoad]
     public class BuildSettingsPresetsManager : AssetPostprocessor
     {
-        private const string ROOT_FOLDER = "Assets";
-        private const string DEFAULT_NAME = "NewPreset";
+        private const string RootFolder = "Assets";
+        private const string DefaultName = "NewPreset";
 
         static BuildSettingsPresetsManager()
         {
@@ -25,7 +25,7 @@ namespace BuildSettingsPresets
         {
             BuildSettingsPreset preset = BuildSettingsPreset.FromCurrentSettings();
             string dirname = GetCurrentDirectory(preset);
-            if (dirname != ROOT_FOLDER)
+            if (dirname != RootFolder)
             {
                 dirname = Path.Combine(Directory.GetParent(dirname).ToString(), "Presets");
             }
@@ -36,8 +36,8 @@ namespace BuildSettingsPresets
             do
             {
                 string fileName = suffix == 0
-                    ? DEFAULT_NAME
-                    : DEFAULT_NAME + "(" + suffix + ")";
+                    ? DefaultName
+                    : DefaultName + "(" + suffix + ")";
                 path = Path.Combine(dirname, fileName + ".asset");
                 ++suffix;
             } while (File.Exists(path));
@@ -185,7 +185,7 @@ namespace BuildSettingsPresets
             }
 
             return Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(preset))) ??
-                   ROOT_FOLDER;
+                   RootFolder;
         }
 
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,

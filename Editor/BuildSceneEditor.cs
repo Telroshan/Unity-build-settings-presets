@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace BuildSettingsPresets
+namespace TelroshanTools.BuildSettingsPresets.Editor
 {
     [CustomPropertyDrawer(typeof(BuildSettingsPreset.BuildScene))]
     public class BuildSceneEditor : PropertyDrawer

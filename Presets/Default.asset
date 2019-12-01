@@ -17,7 +17,7 @@ MonoBehaviour:
   activeScriptCompilationDefines: 
   allowDebugging: 0
   androidBuildSubtarget: 0
-  androidETC2Fallback: 0
+  androidEtc2Fallback: 0
   buildAppBundle: 0
   buildScriptsOnly: 0
   compressFilesInPackage: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
   exportAsGoogleAndroidProject: 0
   forceInstallation: 0
   installInBuildFolder: 0
-  iOSBuildConfigType: 1
+  iOsBuildConfigType: 1
   movePackageToDiscOuterEdge: 0
   needSubmissionMaterials: 0
   ps4BuildSubtarget: 0
@@ -46,8 +46,8 @@ MonoBehaviour:
   windowsDevicePortalUsername: 
   wsaBuildAndRunDeployTarget: 0
   wsaSubtarget: 0
-  wsaUWPSDK: 
-  wsaUWPVisualStudioVersion: 
+  wsaUwpsdk: 
+  wsaUwpVisualStudioVersion: 
   xboxBuildSubtarget: 0
   xboxOneDeployDrive: 0
   xboxOneDeployMethod: 0

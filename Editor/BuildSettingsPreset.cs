@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace BuildSettingsPresets
+namespace TelroshanTools.BuildSettingsPresets.Editor
 {
     public class BuildSettingsPreset : ScriptableObject
     {
@@ -22,7 +22,7 @@ namespace BuildSettingsPresets
         [SerializeField] private string activeScriptCompilationDefines;
         [SerializeField] private bool allowDebugging;
         [SerializeField] private MobileTextureSubtarget androidBuildSubtarget;
-        [SerializeField] private AndroidETC2Fallback androidETC2Fallback;
+        [SerializeField] private AndroidETC2Fallback androidEtc2Fallback;
         [SerializeField] private bool buildAppBundle;
         [SerializeField] private bool buildScriptsOnly;
         [SerializeField] private bool compressFilesInPackage;
@@ -36,7 +36,7 @@ namespace BuildSettingsPresets
         [SerializeField] private bool exportAsGoogleAndroidProject;
         [SerializeField] private bool forceInstallation;
         [SerializeField] private bool installInBuildFolder;
-        [SerializeField] private iOSBuildType iOSBuildConfigType;
+        [SerializeField] private iOSBuildType iOsBuildConfigType;
         [SerializeField] private bool movePackageToDiscOuterEdge;
         [SerializeField] private bool needSubmissionMaterials;
         [SerializeField] private PS4BuildSubtarget ps4BuildSubtarget;
@@ -51,8 +51,8 @@ namespace BuildSettingsPresets
         [SerializeField] private string windowsDevicePortalUsername;
         [SerializeField] private WSABuildAndRunDeployTarget wsaBuildAndRunDeployTarget;
         [SerializeField] private WSASubtarget wsaSubtarget;
-        [SerializeField] private string wsaUWPSDK;
-        [SerializeField] private string wsaUWPVisualStudioVersion;
+        [SerializeField] private string wsaUwpsdk;
+        [SerializeField] private string wsaUwpVisualStudioVersion;
         [SerializeField] private XboxBuildSubtarget xboxBuildSubtarget;
         [SerializeField] private XboxOneDeployDrive xboxOneDeployDrive;
         [SerializeField] private XboxOneDeployMethod xboxOneDeployMethod;
@@ -74,7 +74,7 @@ namespace BuildSettingsPresets
                 PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
             allowDebugging = EditorUserBuildSettings.allowDebugging;
             androidBuildSubtarget = EditorUserBuildSettings.androidBuildSubtarget;
-            androidETC2Fallback = EditorUserBuildSettings.androidETC2Fallback;
+            androidEtc2Fallback = EditorUserBuildSettings.androidETC2Fallback;
             buildAppBundle = EditorUserBuildSettings.buildAppBundle;
             buildScriptsOnly = EditorUserBuildSettings.buildScriptsOnly;
             compressFilesInPackage = EditorUserBuildSettings.compressFilesInPackage;
@@ -88,7 +88,7 @@ namespace BuildSettingsPresets
             exportAsGoogleAndroidProject = EditorUserBuildSettings.exportAsGoogleAndroidProject;
             forceInstallation = EditorUserBuildSettings.forceInstallation;
             installInBuildFolder = EditorUserBuildSettings.installInBuildFolder;
-            iOSBuildConfigType = EditorUserBuildSettings.iOSBuildConfigType;
+            iOsBuildConfigType = EditorUserBuildSettings.iOSBuildConfigType;
             movePackageToDiscOuterEdge = EditorUserBuildSettings.movePackageToDiscOuterEdge;
             needSubmissionMaterials = EditorUserBuildSettings.needSubmissionMaterials;
             ps4BuildSubtarget = EditorUserBuildSettings.ps4BuildSubtarget;
@@ -103,8 +103,8 @@ namespace BuildSettingsPresets
             windowsDevicePortalUsername = EditorUserBuildSettings.windowsDevicePortalUsername;
             wsaBuildAndRunDeployTarget = EditorUserBuildSettings.wsaBuildAndRunDeployTarget;
             wsaSubtarget = EditorUserBuildSettings.wsaSubtarget;
-            wsaUWPSDK = EditorUserBuildSettings.wsaUWPSDK;
-            wsaUWPVisualStudioVersion = EditorUserBuildSettings.wsaUWPVisualStudioVersion;
+            wsaUwpsdk = EditorUserBuildSettings.wsaUWPSDK;
+            wsaUwpVisualStudioVersion = EditorUserBuildSettings.wsaUWPVisualStudioVersion;
             xboxBuildSubtarget = EditorUserBuildSettings.xboxBuildSubtarget;
             xboxOneDeployDrive = EditorUserBuildSettings.xboxOneDeployDrive;
             xboxOneDeployMethod = EditorUserBuildSettings.xboxOneDeployMethod;
@@ -133,7 +133,7 @@ namespace BuildSettingsPresets
             PlayerSettings.SetScriptingDefineSymbolsForGroup(selectedBuildTargetGroup, activeScriptCompilationDefines);
             EditorUserBuildSettings.allowDebugging = allowDebugging;
             EditorUserBuildSettings.androidBuildSubtarget = androidBuildSubtarget;
-            EditorUserBuildSettings.androidETC2Fallback = androidETC2Fallback;
+            EditorUserBuildSettings.androidETC2Fallback = androidEtc2Fallback;
             EditorUserBuildSettings.buildAppBundle = buildAppBundle;
             EditorUserBuildSettings.buildScriptsOnly = buildScriptsOnly;
             EditorUserBuildSettings.compressFilesInPackage = compressFilesInPackage;
@@ -147,7 +147,7 @@ namespace BuildSettingsPresets
             EditorUserBuildSettings.exportAsGoogleAndroidProject = exportAsGoogleAndroidProject;
             EditorUserBuildSettings.forceInstallation = forceInstallation;
             EditorUserBuildSettings.installInBuildFolder = installInBuildFolder;
-            EditorUserBuildSettings.iOSBuildConfigType = iOSBuildConfigType;
+            EditorUserBuildSettings.iOSBuildConfigType = iOsBuildConfigType;
             EditorUserBuildSettings.movePackageToDiscOuterEdge = movePackageToDiscOuterEdge;
             EditorUserBuildSettings.needSubmissionMaterials = needSubmissionMaterials;
             EditorUserBuildSettings.ps4BuildSubtarget = ps4BuildSubtarget;
@@ -162,8 +162,8 @@ namespace BuildSettingsPresets
             EditorUserBuildSettings.windowsDevicePortalUsername = windowsDevicePortalUsername;
             EditorUserBuildSettings.wsaBuildAndRunDeployTarget = wsaBuildAndRunDeployTarget;
             EditorUserBuildSettings.wsaSubtarget = wsaSubtarget;
-            EditorUserBuildSettings.wsaUWPSDK = wsaUWPSDK;
-            EditorUserBuildSettings.wsaUWPVisualStudioVersion = wsaUWPVisualStudioVersion;
+            EditorUserBuildSettings.wsaUWPSDK = wsaUwpsdk;
+            EditorUserBuildSettings.wsaUWPVisualStudioVersion = wsaUwpVisualStudioVersion;
             EditorUserBuildSettings.xboxBuildSubtarget = xboxBuildSubtarget;
             EditorUserBuildSettings.xboxOneDeployDrive = xboxOneDeployDrive;
             EditorUserBuildSettings.xboxOneDeployMethod = xboxOneDeployMethod;
