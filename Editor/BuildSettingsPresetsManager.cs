@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TelroshanTools.BuildSettingsPresets.Editor
 {
@@ -52,9 +53,9 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         public static void ApplyPreset(string presetGuid)
         {
             AssetDatabase.LoadAssetAtPath<BuildSettingsPreset>(AssetDatabase.GUIDToAssetPath(presetGuid)).Apply();
-            
+
             UpdateCsProj();
-            
+
             EditorApplication.ExecuteMenuItem("File/Save Project");
         }
 
@@ -62,7 +63,7 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
 
         #region Code generation
 
-        private static void RefreshPresetsList()
+        public static void RefreshPresetsList()
         {
             // Get all the presets assets
             string[] guids = AssetDatabase.FindAssets("t:" + nameof(BuildSettingsPreset));
@@ -192,6 +193,28 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             string[] movedFromAssetPaths)
         {
             RefreshPresetsList();
+        }
+    }
+
+    public class BuildSettingsPresetModificationProcessor : UnityEditor.AssetModificationProcessor
+    {
+        private static AssetMoveResult OnWillMoveAsset(string sourcePath, string destinationPath)
+        {
+            Object asset = AssetDatabase.LoadAssetAtPath<Object>(sourcePath);
+            if (asset.GetType() == typeof(BuildSettingsPreset))
+            {
+                // A preset changed (renamed or moved), refresh list
+                // Don't refresh immediately because this function gets called right before the asset gets moved
+                EditorApplication.delayCall += RefreshDelayCall;
+            }
+
+            return AssetMoveResult.DidNotMove;
+        }
+
+        private static void RefreshDelayCall()
+        {
+            BuildSettingsPresetsManager.RefreshPresetsList();
+            EditorApplication.delayCall -= RefreshDelayCall;
         }
     }
 }
