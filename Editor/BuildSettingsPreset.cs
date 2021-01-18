@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -15,11 +16,11 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             public string path;
             public bool enabled;
         }
-        
+
         [SerializeField] private BuildScene[] scenes;
-        
+
         [SerializeField] private BuildTarget activeBuildTarget;
-        [SerializeField] private string activeScriptCompilationDefines;
+        [SerializeField] private List<string> activeScriptCompilationDefines = new List<string>();
         [SerializeField] private bool allowDebugging;
         [SerializeField] private MobileTextureSubtarget androidBuildSubtarget;
         [SerializeField] private AndroidETC2Fallback androidEtc2Fallback;
@@ -71,7 +72,8 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
 
             activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
             activeScriptCompilationDefines =
-                PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+                PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup)
+                    .Split(';').ToList();
             allowDebugging = EditorUserBuildSettings.allowDebugging;
             androidBuildSubtarget = EditorUserBuildSettings.androidBuildSubtarget;
             androidEtc2Fallback = EditorUserBuildSettings.androidETC2Fallback;
@@ -110,11 +112,11 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             xboxOneDeployMethod = EditorUserBuildSettings.xboxOneDeployMethod;
             xboxOneRebootIfDeployFailsAndRetry = EditorUserBuildSettings.xboxOneRebootIfDeployFailsAndRetry;
         }
-        
+
         public static BuildSettingsPreset FromCurrentSettings()
         {
             BuildSettingsPreset preset = CreateInstance<BuildSettingsPreset>();
-            
+
             preset.OverwriteWithCurrentBuildSettings();
 
             return preset;
@@ -128,9 +130,10 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
                 path = x.path,
                 enabled = x.enabled,
             }).ToArray();
-            
+
             EditorUserBuildSettings.SwitchActiveBuildTarget(selectedBuildTargetGroup, activeBuildTarget);
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(selectedBuildTargetGroup, activeScriptCompilationDefines);
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(selectedBuildTargetGroup,
+                string.Join(";", activeScriptCompilationDefines));
             EditorUserBuildSettings.allowDebugging = allowDebugging;
             EditorUserBuildSettings.androidBuildSubtarget = androidBuildSubtarget;
             EditorUserBuildSettings.androidETC2Fallback = androidEtc2Fallback;
