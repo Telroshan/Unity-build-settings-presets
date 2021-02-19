@@ -14,11 +14,6 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         private const string RootFolder = "Assets";
         private const string DefaultName = "NewPreset";
 
-        static BuildSettingsPresetsManager()
-        {
-            RefreshPresetsList();
-        }
-
         #region Presets actions
 
         [MenuItem("Build presets/+ New (from current settings)")]
@@ -72,14 +67,7 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 BuildSettingsPreset preset = AssetDatabase.LoadAssetAtPath<BuildSettingsPreset>(path);
-                if (preset)
-                {
-                    presets.Add(guid, preset.name);
-                }
-                else
-                {
-                    Debug.LogWarning($"Couldn't load {nameof(BuildSettingsPreset)} at path {path} with GUID {guid}");
-                }
+                presets.Add(guid, preset.name);
             }
 
             // Don't refresh if nothing changed
