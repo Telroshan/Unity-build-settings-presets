@@ -72,7 +72,14 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 BuildSettingsPreset preset = AssetDatabase.LoadAssetAtPath<BuildSettingsPreset>(path);
-                presets.Add(guid, preset.name);
+                if (preset)
+                {
+                    presets.Add(guid, preset.name);
+                }
+                else
+                {
+                    Debug.LogWarning($"Couldn't load {nameof(BuildSettingsPreset)} at path {path} with GUID {guid}");
+                }
             }
 
             // Don't refresh if nothing changed
