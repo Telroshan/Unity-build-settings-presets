@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db85cc5ac7b3ec748a78a2f5cadc0624, type: 3}
   m_Name: Default
   m_EditorClassIdentifier: 
+  presetVersion: 1
   scenes: []
-  activeBuildTarget: 5
-  activeScriptCompilationDefines: 
+  activeBuildTarget: 19
+  activeScriptCompilationDefines:
+  - 
   allowDebugging: 0
   androidBuildSubtarget: 0
   androidEtc2Fallback: 0
   buildAppBundle: 0
   buildScriptsOnly: 0
   compressFilesInPackage: 0
-  compressWithPsArc: 0
   connectProfiler: 0
   development: 0
   enableHeadlessMode: 0
@@ -37,7 +38,7 @@ MonoBehaviour:
   ps4BuildSubtarget: 0
   ps4HardwareTarget: 1
   selectedBuildTargetGroup: 1
-  selectedStandaloneTarget: 5
+  selectedStandaloneTarget: 19
   streamingInstallLaunchRange: 0
   symlinkLibraries: 0
   waitForPlayerConnection: 0
@@ -45,10 +46,51 @@ MonoBehaviour:
   windowsDevicePortalPassword: 
   windowsDevicePortalUsername: 
   wsaBuildAndRunDeployTarget: 0
-  wsaSubtarget: 0
   wsaUwpsdk: 
   wsaUwpVisualStudioVersion: 
   xboxBuildSubtarget: 0
   xboxOneDeployDrive: 0
   xboxOneDeployMethod: 0
   xboxOneRebootIfDeployFailsAndRetry: 0
+  selectedQnxOsVersion: 1
+  selectedQnxArchitecture: 0
+  selectedEmbeddedLinuxArchitecture: 0
+  remoteDeviceInfo: 0
+  remoteDeviceAddress: 
+  remoteDeviceUsername: 
+  remoteDeviceExports: 
+  pathOnRemoteDevice: 
+  standaloneBuildSubtarget: 0
+  webGLBuildSubtarget: 0
+  androidETC2Fallback: 0
+  androidBuildSystem: 1
+  androidBuildType: 2
+  androidCreateSymbols: 0
+  wsaUWPBuildType: 1
+  wsaUWPSDK: 
+  wsaMinUWPSDK: 
+  wsaArchitecture: 
+  wsaUWPVisualStudioVersion: 
+  overrideMaxTextureSize: 0
+  overrideTextureCompression: 0
+  buildWithDeepProfilingSupport: 0
+  symlinkSources: 0
+  iOSXcodeBuildConfig: 1
+  macOSXcodeBuildConfig: 1
+  switchCreateRomFile: 0
+  switchEnableRomCompression: 0
+  switchSaveAdf: 0
+  switchRomCompressionType: 1
+  switchRomCompressionLevel: 0
+  switchRomCompressionConfig: 
+  switchNVNGraphicsDebugger: 0
+  generateNintendoSwitchShaderInfo: 0
+  switchNVNShaderDebugging: 0
+  switchNVNDrawValidationLight: 0
+  switchNVNDrawValidationHeavy: 0
+  switchEnableMemoryTracker: 0
+  switchWaitForMemoryTrackerOnStartup: 0
+  switchEnableDebugPad: 1
+  switchRedirectWritesToHostMount: 0
+  switchHtcsScriptDebugging: 1
+  switchUseLegacyNvnPoolAllocator: 0
