@@ -27,7 +27,6 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         [SerializeField] private bool buildAppBundle;
         [SerializeField] private bool buildScriptsOnly;
         [SerializeField] private bool compressFilesInPackage;
-        [SerializeField] private bool compressWithPsArc;
         [SerializeField] private bool connectProfiler;
         [SerializeField] private bool development;
         [SerializeField] private bool enableHeadlessMode;
@@ -37,7 +36,7 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         [SerializeField] private bool exportAsGoogleAndroidProject;
         [SerializeField] private bool forceInstallation;
         [SerializeField] private bool installInBuildFolder;
-        [SerializeField] private iOSBuildType iOsBuildConfigType;
+        [SerializeField] private XcodeBuildConfig iOsBuildConfigType;
         [SerializeField] private bool movePackageToDiscOuterEdge;
         [SerializeField] private bool needSubmissionMaterials;
         [SerializeField] private PS4BuildSubtarget ps4BuildSubtarget;
@@ -51,7 +50,6 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         [SerializeField] private string windowsDevicePortalPassword;
         [SerializeField] private string windowsDevicePortalUsername;
         [SerializeField] private WSABuildAndRunDeployTarget wsaBuildAndRunDeployTarget;
-        [SerializeField] private WSASubtarget wsaSubtarget;
         [SerializeField] private string wsaUwpsdk;
         [SerializeField] private string wsaUwpVisualStudioVersion;
         [SerializeField] private XboxBuildSubtarget xboxBuildSubtarget;
@@ -80,17 +78,16 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             buildAppBundle = EditorUserBuildSettings.buildAppBundle;
             buildScriptsOnly = EditorUserBuildSettings.buildScriptsOnly;
             compressFilesInPackage = EditorUserBuildSettings.compressFilesInPackage;
-            compressWithPsArc = EditorUserBuildSettings.compressWithPsArc;
             connectProfiler = EditorUserBuildSettings.connectProfiler;
             development = EditorUserBuildSettings.development;
-            enableHeadlessMode = EditorUserBuildSettings.enableHeadlessMode;
+            enableHeadlessMode = EditorUserBuildSettings.standaloneBuildSubtarget == StandaloneBuildSubtarget.Server;
             explicitArrayBoundsChecks = EditorUserBuildSettings.explicitArrayBoundsChecks;
             explicitDivideByZeroChecks = EditorUserBuildSettings.explicitDivideByZeroChecks;
             explicitNullChecks = EditorUserBuildSettings.explicitNullChecks;
             exportAsGoogleAndroidProject = EditorUserBuildSettings.exportAsGoogleAndroidProject;
             forceInstallation = EditorUserBuildSettings.forceInstallation;
             installInBuildFolder = EditorUserBuildSettings.installInBuildFolder;
-            iOsBuildConfigType = EditorUserBuildSettings.iOSBuildConfigType;
+            iOsBuildConfigType = EditorUserBuildSettings.iOSXcodeBuildConfig;
             movePackageToDiscOuterEdge = EditorUserBuildSettings.movePackageToDiscOuterEdge;
             needSubmissionMaterials = EditorUserBuildSettings.needSubmissionMaterials;
             ps4BuildSubtarget = EditorUserBuildSettings.ps4BuildSubtarget;
@@ -98,13 +95,12 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             selectedBuildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
             selectedStandaloneTarget = EditorUserBuildSettings.selectedStandaloneTarget;
             streamingInstallLaunchRange = EditorUserBuildSettings.streamingInstallLaunchRange;
-            symlinkLibraries = EditorUserBuildSettings.symlinkLibraries;
+            symlinkLibraries = EditorUserBuildSettings.symlinkSources;
             waitForPlayerConnection = EditorUserBuildSettings.waitForPlayerConnection;
             windowsDevicePortalAddress = EditorUserBuildSettings.windowsDevicePortalAddress;
             windowsDevicePortalPassword = EditorUserBuildSettings.windowsDevicePortalPassword;
             windowsDevicePortalUsername = EditorUserBuildSettings.windowsDevicePortalUsername;
             wsaBuildAndRunDeployTarget = EditorUserBuildSettings.wsaBuildAndRunDeployTarget;
-            wsaSubtarget = EditorUserBuildSettings.wsaSubtarget;
             wsaUwpsdk = EditorUserBuildSettings.wsaUWPSDK;
             wsaUwpVisualStudioVersion = EditorUserBuildSettings.wsaUWPVisualStudioVersion;
             xboxBuildSubtarget = EditorUserBuildSettings.xboxBuildSubtarget;
@@ -140,17 +136,18 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             EditorUserBuildSettings.buildAppBundle = buildAppBundle;
             EditorUserBuildSettings.buildScriptsOnly = buildScriptsOnly;
             EditorUserBuildSettings.compressFilesInPackage = compressFilesInPackage;
-            EditorUserBuildSettings.compressWithPsArc = compressWithPsArc;
             EditorUserBuildSettings.connectProfiler = connectProfiler;
             EditorUserBuildSettings.development = development;
-            EditorUserBuildSettings.enableHeadlessMode = enableHeadlessMode;
+            EditorUserBuildSettings.standaloneBuildSubtarget = enableHeadlessMode
+                ? StandaloneBuildSubtarget.Server
+                : StandaloneBuildSubtarget.Player;
             EditorUserBuildSettings.explicitArrayBoundsChecks = explicitArrayBoundsChecks;
             EditorUserBuildSettings.explicitDivideByZeroChecks = explicitDivideByZeroChecks;
             EditorUserBuildSettings.explicitNullChecks = explicitNullChecks;
             EditorUserBuildSettings.exportAsGoogleAndroidProject = exportAsGoogleAndroidProject;
             EditorUserBuildSettings.forceInstallation = forceInstallation;
             EditorUserBuildSettings.installInBuildFolder = installInBuildFolder;
-            EditorUserBuildSettings.iOSBuildConfigType = iOsBuildConfigType;
+            EditorUserBuildSettings.iOSXcodeBuildConfig = iOsBuildConfigType;
             EditorUserBuildSettings.movePackageToDiscOuterEdge = movePackageToDiscOuterEdge;
             EditorUserBuildSettings.needSubmissionMaterials = needSubmissionMaterials;
             EditorUserBuildSettings.ps4BuildSubtarget = ps4BuildSubtarget;
@@ -158,13 +155,12 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             EditorUserBuildSettings.selectedBuildTargetGroup = selectedBuildTargetGroup;
             EditorUserBuildSettings.selectedStandaloneTarget = selectedStandaloneTarget;
             EditorUserBuildSettings.streamingInstallLaunchRange = streamingInstallLaunchRange;
-            EditorUserBuildSettings.symlinkLibraries = symlinkLibraries;
+            EditorUserBuildSettings.symlinkSources = symlinkLibraries;
             EditorUserBuildSettings.waitForPlayerConnection = waitForPlayerConnection;
             EditorUserBuildSettings.windowsDevicePortalAddress = windowsDevicePortalAddress;
             EditorUserBuildSettings.windowsDevicePortalPassword = windowsDevicePortalPassword;
             EditorUserBuildSettings.windowsDevicePortalUsername = windowsDevicePortalUsername;
             EditorUserBuildSettings.wsaBuildAndRunDeployTarget = wsaBuildAndRunDeployTarget;
-            EditorUserBuildSettings.wsaSubtarget = wsaSubtarget;
             EditorUserBuildSettings.wsaUWPSDK = wsaUwpsdk;
             EditorUserBuildSettings.wsaUWPVisualStudioVersion = wsaUwpVisualStudioVersion;
             EditorUserBuildSettings.xboxBuildSubtarget = xboxBuildSubtarget;
