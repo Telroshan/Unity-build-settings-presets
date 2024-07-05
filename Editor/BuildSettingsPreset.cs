@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 
 namespace TelroshanTools.BuildSettingsPresets.Editor
@@ -20,7 +21,7 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         [SerializeField] private BuildScene[] scenes;
 
         [SerializeField] private BuildTarget activeBuildTarget;
-        [SerializeField] private List<string> activeScriptCompilationDefines = new List<string>();
+        [SerializeField] private List<string> activeScriptCompilationDefines = new();
         [SerializeField] private bool allowDebugging;
         [SerializeField] private MobileTextureSubtarget androidBuildSubtarget;
         [SerializeField] private AndroidETC2Fallback androidEtc2Fallback;
@@ -56,6 +57,49 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         [SerializeField] private XboxOneDeployDrive xboxOneDeployDrive;
         [SerializeField] private XboxOneDeployMethod xboxOneDeployMethod;
         [SerializeField] private bool xboxOneRebootIfDeployFailsAndRetry;
+
+        [SerializeField] private QNXOsVersion selectedQnxOsVersion;
+        [SerializeField] private QNXArchitecture selectedQnxArchitecture;
+        [SerializeField] private EmbeddedLinuxArchitecture selectedEmbeddedLinuxArchitecture;
+        [SerializeField] private bool remoteDeviceInfo;
+        [SerializeField] private string remoteDeviceAddress;
+        [SerializeField] private string remoteDeviceUsername;
+        [SerializeField] private string remoteDeviceExports;
+        [SerializeField] private string pathOnRemoteDevice;
+        [SerializeField] private StandaloneBuildSubtarget standaloneBuildSubtarget;
+        [SerializeField] private WebGLTextureSubtarget webGLBuildSubtarget;
+        [SerializeField] private AndroidETC2Fallback androidETC2Fallback;
+        [SerializeField] private AndroidBuildSystem androidBuildSystem;
+        [SerializeField] private AndroidBuildType androidBuildType;
+        [SerializeField] private AndroidCreateSymbols androidCreateSymbols;
+        [SerializeField] private WSAUWPBuildType wsaUWPBuildType;
+        [SerializeField] private string wsaUWPSDK;
+        [SerializeField] private string wsaMinUWPSDK;
+        [SerializeField] private string wsaArchitecture;
+        [SerializeField] private string wsaUWPVisualStudioVersion;
+        [SerializeField] private int overrideMaxTextureSize;
+        [SerializeField] private OverrideTextureCompression overrideTextureCompression;
+        [SerializeField] private bool buildWithDeepProfilingSupport;
+        [SerializeField] private bool symlinkSources;
+        [SerializeField] private XcodeBuildConfig iOSXcodeBuildConfig;
+        [SerializeField] private XcodeBuildConfig macOSXcodeBuildConfig;
+        [SerializeField] private bool switchCreateRomFile;
+        [SerializeField] private bool switchEnableRomCompression;
+        [SerializeField] private bool switchSaveAdf;
+        [SerializeField] private SwitchRomCompressionType switchRomCompressionType;
+        [SerializeField] private int switchRomCompressionLevel;
+        [SerializeField] private string switchRomCompressionConfig;
+        [SerializeField] private bool switchNVNGraphicsDebugger;
+        [SerializeField] private bool generateNintendoSwitchShaderInfo;
+        [SerializeField] private bool switchNVNShaderDebugging;
+        [SerializeField] private bool switchNVNDrawValidationLight;
+        [SerializeField] private bool switchNVNDrawValidationHeavy;
+        [SerializeField] private bool switchEnableMemoryTracker;
+        [SerializeField] private bool switchWaitForMemoryTrackerOnStartup;
+        [SerializeField] private bool switchEnableDebugPad;
+        [SerializeField] private bool switchRedirectWritesToHostMount;
+        [SerializeField] private bool switchHtcsScriptDebugging;
+        [SerializeField] private bool switchUseLegacyNvnPoolAllocator;
 
         public void OverwriteWithCurrentBuildSettings()
         {
@@ -107,6 +151,49 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             xboxOneDeployDrive = EditorUserBuildSettings.xboxOneDeployDrive;
             xboxOneDeployMethod = EditorUserBuildSettings.xboxOneDeployMethod;
             xboxOneRebootIfDeployFailsAndRetry = EditorUserBuildSettings.xboxOneRebootIfDeployFailsAndRetry;
+
+            selectedQnxOsVersion = EditorUserBuildSettings.selectedQnxOsVersion;
+            selectedQnxArchitecture = EditorUserBuildSettings.selectedQnxArchitecture;
+            selectedEmbeddedLinuxArchitecture = EditorUserBuildSettings.selectedEmbeddedLinuxArchitecture;
+            remoteDeviceInfo = EditorUserBuildSettings.remoteDeviceInfo;
+            remoteDeviceAddress = EditorUserBuildSettings.remoteDeviceAddress;
+            remoteDeviceUsername = EditorUserBuildSettings.remoteDeviceUsername;
+            remoteDeviceExports = EditorUserBuildSettings.remoteDeviceExports;
+            pathOnRemoteDevice = EditorUserBuildSettings.pathOnRemoteDevice;
+            standaloneBuildSubtarget = EditorUserBuildSettings.standaloneBuildSubtarget;
+            webGLBuildSubtarget = EditorUserBuildSettings.webGLBuildSubtarget;
+            androidETC2Fallback = EditorUserBuildSettings.androidETC2Fallback;
+            androidBuildSystem = EditorUserBuildSettings.androidBuildSystem;
+            androidBuildType = EditorUserBuildSettings.androidBuildType;
+            androidCreateSymbols = EditorUserBuildSettings.androidCreateSymbols;
+            wsaUWPBuildType = EditorUserBuildSettings.wsaUWPBuildType;
+            wsaUWPSDK = EditorUserBuildSettings.wsaUWPSDK;
+            wsaMinUWPSDK = EditorUserBuildSettings.wsaMinUWPSDK;
+            wsaArchitecture = EditorUserBuildSettings.wsaArchitecture;
+            wsaUWPVisualStudioVersion = EditorUserBuildSettings.wsaUWPVisualStudioVersion;
+            overrideMaxTextureSize = EditorUserBuildSettings.overrideMaxTextureSize;
+            overrideTextureCompression = EditorUserBuildSettings.overrideTextureCompression;
+            buildWithDeepProfilingSupport = EditorUserBuildSettings.buildWithDeepProfilingSupport;
+            symlinkSources = EditorUserBuildSettings.symlinkSources;
+            iOSXcodeBuildConfig = EditorUserBuildSettings.iOSXcodeBuildConfig;
+            macOSXcodeBuildConfig = EditorUserBuildSettings.macOSXcodeBuildConfig;
+            switchCreateRomFile = EditorUserBuildSettings.switchCreateRomFile;
+            switchEnableRomCompression = EditorUserBuildSettings.switchEnableRomCompression;
+            switchSaveAdf = EditorUserBuildSettings.switchSaveADF;
+            switchRomCompressionType = EditorUserBuildSettings.switchRomCompressionType;
+            switchRomCompressionLevel = EditorUserBuildSettings.switchRomCompressionLevel;
+            switchRomCompressionConfig = EditorUserBuildSettings.switchRomCompressionConfig;
+            switchNVNGraphicsDebugger = EditorUserBuildSettings.switchNVNGraphicsDebugger;
+            generateNintendoSwitchShaderInfo = EditorUserBuildSettings.generateNintendoSwitchShaderInfo;
+            switchNVNShaderDebugging = EditorUserBuildSettings.switchNVNShaderDebugging;
+            switchNVNDrawValidationLight = EditorUserBuildSettings.switchNVNDrawValidation_Light;
+            switchNVNDrawValidationHeavy = EditorUserBuildSettings.switchNVNDrawValidation_Heavy;
+            switchEnableMemoryTracker = EditorUserBuildSettings.switchEnableMemoryTracker;
+            switchWaitForMemoryTrackerOnStartup = EditorUserBuildSettings.switchWaitForMemoryTrackerOnStartup;
+            switchEnableDebugPad = EditorUserBuildSettings.switchEnableDebugPad;
+            switchRedirectWritesToHostMount = EditorUserBuildSettings.switchRedirectWritesToHostMount;
+            switchHtcsScriptDebugging = EditorUserBuildSettings.switchHTCSScriptDebugging;
+            switchUseLegacyNvnPoolAllocator = EditorUserBuildSettings.switchUseLegacyNvnPoolAllocator;
         }
 
         public static BuildSettingsPreset FromCurrentSettings()
@@ -167,6 +254,49 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             EditorUserBuildSettings.xboxOneDeployDrive = xboxOneDeployDrive;
             EditorUserBuildSettings.xboxOneDeployMethod = xboxOneDeployMethod;
             EditorUserBuildSettings.xboxOneRebootIfDeployFailsAndRetry = xboxOneRebootIfDeployFailsAndRetry;
+
+            EditorUserBuildSettings.selectedQnxOsVersion = selectedQnxOsVersion;
+            EditorUserBuildSettings.selectedQnxArchitecture = selectedQnxArchitecture;
+            EditorUserBuildSettings.selectedEmbeddedLinuxArchitecture = selectedEmbeddedLinuxArchitecture;
+            EditorUserBuildSettings.remoteDeviceInfo = remoteDeviceInfo;
+            EditorUserBuildSettings.remoteDeviceAddress = remoteDeviceAddress;
+            EditorUserBuildSettings.remoteDeviceUsername = remoteDeviceUsername;
+            EditorUserBuildSettings.remoteDeviceExports = remoteDeviceExports;
+            EditorUserBuildSettings.pathOnRemoteDevice = pathOnRemoteDevice;
+            EditorUserBuildSettings.standaloneBuildSubtarget = standaloneBuildSubtarget;
+            EditorUserBuildSettings.webGLBuildSubtarget = webGLBuildSubtarget;
+            EditorUserBuildSettings.androidETC2Fallback = androidETC2Fallback;
+            EditorUserBuildSettings.androidBuildSystem = androidBuildSystem;
+            EditorUserBuildSettings.androidBuildType = androidBuildType;
+            EditorUserBuildSettings.androidCreateSymbols = androidCreateSymbols;
+            EditorUserBuildSettings.wsaUWPBuildType = wsaUWPBuildType;
+            EditorUserBuildSettings.wsaUWPSDK = wsaUWPSDK;
+            EditorUserBuildSettings.wsaMinUWPSDK = wsaMinUWPSDK;
+            EditorUserBuildSettings.wsaArchitecture = wsaArchitecture;
+            EditorUserBuildSettings.wsaUWPVisualStudioVersion = wsaUWPVisualStudioVersion;
+            EditorUserBuildSettings.overrideMaxTextureSize = overrideMaxTextureSize;
+            EditorUserBuildSettings.overrideTextureCompression = overrideTextureCompression;
+            EditorUserBuildSettings.buildWithDeepProfilingSupport = buildWithDeepProfilingSupport;
+            EditorUserBuildSettings.symlinkSources = symlinkSources;
+            EditorUserBuildSettings.iOSXcodeBuildConfig = iOSXcodeBuildConfig;
+            EditorUserBuildSettings.macOSXcodeBuildConfig = macOSXcodeBuildConfig;
+            EditorUserBuildSettings.switchCreateRomFile = switchCreateRomFile;
+            EditorUserBuildSettings.switchEnableRomCompression = switchEnableRomCompression;
+            EditorUserBuildSettings.switchSaveADF = switchSaveAdf;
+            EditorUserBuildSettings.switchRomCompressionType = switchRomCompressionType;
+            EditorUserBuildSettings.switchRomCompressionLevel = switchRomCompressionLevel;
+            EditorUserBuildSettings.switchRomCompressionConfig = switchRomCompressionConfig;
+            EditorUserBuildSettings.switchNVNGraphicsDebugger = switchNVNGraphicsDebugger;
+            EditorUserBuildSettings.generateNintendoSwitchShaderInfo = generateNintendoSwitchShaderInfo;
+            EditorUserBuildSettings.switchNVNShaderDebugging = switchNVNShaderDebugging;
+            EditorUserBuildSettings.switchNVNDrawValidation_Light = switchNVNDrawValidationLight;
+            EditorUserBuildSettings.switchNVNDrawValidation_Heavy = switchNVNDrawValidationHeavy;
+            EditorUserBuildSettings.switchEnableMemoryTracker = switchEnableMemoryTracker;
+            EditorUserBuildSettings.switchWaitForMemoryTrackerOnStartup = switchWaitForMemoryTrackerOnStartup;
+            EditorUserBuildSettings.switchEnableDebugPad = switchEnableDebugPad;
+            EditorUserBuildSettings.switchRedirectWritesToHostMount = switchRedirectWritesToHostMount;
+            EditorUserBuildSettings.switchHTCSScriptDebugging = switchHtcsScriptDebugging;
+            EditorUserBuildSettings.switchUseLegacyNvnPoolAllocator = switchUseLegacyNvnPoolAllocator;
         }
     }
 }
