@@ -8,7 +8,6 @@ using Object = UnityEngine.Object;
 
 namespace TelroshanTools.BuildSettingsPresets.Editor
 {
-    [InitializeOnLoad]
     public class BuildSettingsPresetsManager : AssetPostprocessor
     {
         private const string RootFolder = "Assets";
@@ -20,11 +19,13 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         private static void AddPreset()
         {
             BuildSettingsPreset preset = BuildSettingsPreset.FromCurrentSettings();
-            string dirname = GetCurrentDirectory(preset);
-            if (dirname != RootFolder)
+            string scriptDirectory = GetCurrentDirectory(preset);
+            string dirname = Path.GetDirectoryName(scriptDirectory);
+            if (dirname == null)
             {
-                dirname = Path.Combine(Directory.GetParent(dirname).ToString(), "Presets");
+                throw new Exception("Couldn't get parent directory of " + scriptDirectory);
             }
+            dirname = Path.Combine(dirname, "Presets");
 
             // Don't overwrite an existing preset
             string path;
@@ -191,7 +192,7 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         }
     }
 
-    public class BuildSettingsPresetModificationProcessor : UnityEditor.AssetModificationProcessor
+    public class BuildSettingsPresetModificationProcessor : AssetModificationProcessor
     {
         private static AssetMoveResult OnWillMoveAsset(string sourcePath, string destinationPath)
         {
