@@ -1,14 +1,24 @@
 # Unity build settings presets
 
-_Tested on Unity 2019.2_
-
 This tool lets you save build settings presets in Unity and switch easily between them.
 
 On a project, I needed 2 different standalone builds (a client build, and a server build), with different settings, different scene lists and different script compilation defines. It was pretty boring to manually change those settings each time I'd want to build my game, so here came the Unity build settings presets system.
 
 ## Install
+### Versions available
+- Unity [2019.2](https://github.com/Telroshan/Unity-build-settings-presets/releases/tag/2019.2)
+- Unity [2022.3](https://github.com/Telroshan/Unity-build-settings-presets/releases/tag/2022.3)
+
+**Note**: this doesn't mean that this tool won't work on other Unity versions; these are simply the 2 versions that I've tested it on.
+If you're on another Unity version, you may have to make a few changes to the code depending on the API changes of that specific Unity version._
+
+So, it _could_ work on other Unity versions, but there's no guarantee!
+
+Feel free to open an issue to request support for a specific Unity (LTS) version!
+
 ### Unity package (easiest)
 Simply [download the unity package file from the releases](https://github.com/Telroshan/Unity-build-settings-presets/releases/latest/download/BuildSettingsPresets.unitypackage) and double click it (or import it in Unity)
+
 ### Or clone the repo
 [Download this repo](https://github.com/Telroshan/Unity-build-settings-presets/archive/master.zip) and place it in your Unity project's Assets folder.
 
@@ -27,7 +37,7 @@ _Note : this creates a preset based on your current build settings._
 
 _Note2 : you can also duplicate an existing preset and start working with it_
 
-Presets are stored as assets in the `Unity-build-settings-presets/Presets folder`. You'll find a `Default` preset there, which just contains the basic build settings for standalone, you can remove it safely if you don't need it.
+Presets are stored as assets in the `Unity-build-settings-presets/Presets` folder. You'll find a `Default` preset there, which just contains the basic build settings for standalone (Windows), you can remove it safely if you don't need it.
 
 ### 2 - Edit preset
 Select a preset to view its properties in the inspector.
