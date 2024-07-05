@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Build;
@@ -10,6 +11,18 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
     public class BuildSettingsPreset : ScriptableObject
     {
         [Serializable]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        public enum PresetVersion
+        {
+            [InspectorName("2019.2")] V2019_2,
+            [InspectorName("2022.3")] V2022_3__0,
+        }
+
+        [SerializeField] public PresetVersion presetVersion;
+
+        private const PresetVersion LatestVersion = PresetVersion.V2022_3__0;
+
+        [Serializable]
         public class BuildScene
         {
             public SceneAsset scene;
@@ -18,7 +31,8 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             public bool enabled;
         }
 
-        [SerializeField] private BuildScene[] scenes;
+        [Header("Build settings")] [SerializeField]
+        private BuildScene[] scenes;
 
         [SerializeField] private BuildTarget activeBuildTarget;
         [SerializeField] private List<string> activeScriptCompilationDefines = new();
@@ -57,6 +71,8 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         [SerializeField] private XboxOneDeployDrive xboxOneDeployDrive;
         [SerializeField] private XboxOneDeployMethod xboxOneDeployMethod;
         [SerializeField] private bool xboxOneRebootIfDeployFailsAndRetry;
+
+        #region Properties added in V2022_3__0
 
         [SerializeField] private QNXOsVersion selectedQnxOsVersion;
         [SerializeField] private QNXArchitecture selectedQnxArchitecture;
@@ -100,6 +116,8 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
         [SerializeField] private bool switchRedirectWritesToHostMount;
         [SerializeField] private bool switchHtcsScriptDebugging;
         [SerializeField] private bool switchUseLegacyNvnPoolAllocator;
+
+        #endregion
 
         public void OverwriteWithCurrentBuildSettings()
         {
@@ -194,12 +212,22 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             switchRedirectWritesToHostMount = EditorUserBuildSettings.switchRedirectWritesToHostMount;
             switchHtcsScriptDebugging = EditorUserBuildSettings.switchHTCSScriptDebugging;
             switchUseLegacyNvnPoolAllocator = EditorUserBuildSettings.switchUseLegacyNvnPoolAllocator;
+
+            if (presetVersion < LatestVersion)
+            {
+                var previousVersion = presetVersion;
+                presetVersion = LatestVersion;
+                Debug.Log("Updated preset from version " + previousVersion + " to " + presetVersion +
+                          ", used current build settings values for properties that were added since the last version");
+            }
+
+            EditorUtility.SetDirty(this);
         }
 
         public static BuildSettingsPreset FromCurrentSettings()
         {
             BuildSettingsPreset preset = CreateInstance<BuildSettingsPreset>();
-
+            preset.presetVersion = LatestVersion;
             preset.OverwriteWithCurrentBuildSettings();
 
             return preset;
@@ -255,48 +283,58 @@ namespace TelroshanTools.BuildSettingsPresets.Editor
             EditorUserBuildSettings.xboxOneDeployMethod = xboxOneDeployMethod;
             EditorUserBuildSettings.xboxOneRebootIfDeployFailsAndRetry = xboxOneRebootIfDeployFailsAndRetry;
 
-            EditorUserBuildSettings.selectedQnxOsVersion = selectedQnxOsVersion;
-            EditorUserBuildSettings.selectedQnxArchitecture = selectedQnxArchitecture;
-            EditorUserBuildSettings.selectedEmbeddedLinuxArchitecture = selectedEmbeddedLinuxArchitecture;
-            EditorUserBuildSettings.remoteDeviceInfo = remoteDeviceInfo;
-            EditorUserBuildSettings.remoteDeviceAddress = remoteDeviceAddress;
-            EditorUserBuildSettings.remoteDeviceUsername = remoteDeviceUsername;
-            EditorUserBuildSettings.remoteDeviceExports = remoteDeviceExports;
-            EditorUserBuildSettings.pathOnRemoteDevice = pathOnRemoteDevice;
-            EditorUserBuildSettings.standaloneBuildSubtarget = standaloneBuildSubtarget;
-            EditorUserBuildSettings.webGLBuildSubtarget = webGLBuildSubtarget;
-            EditorUserBuildSettings.androidETC2Fallback = androidETC2Fallback;
-            EditorUserBuildSettings.androidBuildSystem = androidBuildSystem;
-            EditorUserBuildSettings.androidBuildType = androidBuildType;
-            EditorUserBuildSettings.androidCreateSymbols = androidCreateSymbols;
-            EditorUserBuildSettings.wsaUWPBuildType = wsaUWPBuildType;
-            EditorUserBuildSettings.wsaUWPSDK = wsaUWPSDK;
-            EditorUserBuildSettings.wsaMinUWPSDK = wsaMinUWPSDK;
-            EditorUserBuildSettings.wsaArchitecture = wsaArchitecture;
-            EditorUserBuildSettings.wsaUWPVisualStudioVersion = wsaUWPVisualStudioVersion;
-            EditorUserBuildSettings.overrideMaxTextureSize = overrideMaxTextureSize;
-            EditorUserBuildSettings.overrideTextureCompression = overrideTextureCompression;
-            EditorUserBuildSettings.buildWithDeepProfilingSupport = buildWithDeepProfilingSupport;
-            EditorUserBuildSettings.symlinkSources = symlinkSources;
-            EditorUserBuildSettings.iOSXcodeBuildConfig = iOSXcodeBuildConfig;
-            EditorUserBuildSettings.macOSXcodeBuildConfig = macOSXcodeBuildConfig;
-            EditorUserBuildSettings.switchCreateRomFile = switchCreateRomFile;
-            EditorUserBuildSettings.switchEnableRomCompression = switchEnableRomCompression;
-            EditorUserBuildSettings.switchSaveADF = switchSaveAdf;
-            EditorUserBuildSettings.switchRomCompressionType = switchRomCompressionType;
-            EditorUserBuildSettings.switchRomCompressionLevel = switchRomCompressionLevel;
-            EditorUserBuildSettings.switchRomCompressionConfig = switchRomCompressionConfig;
-            EditorUserBuildSettings.switchNVNGraphicsDebugger = switchNVNGraphicsDebugger;
-            EditorUserBuildSettings.generateNintendoSwitchShaderInfo = generateNintendoSwitchShaderInfo;
-            EditorUserBuildSettings.switchNVNShaderDebugging = switchNVNShaderDebugging;
-            EditorUserBuildSettings.switchNVNDrawValidation_Light = switchNVNDrawValidationLight;
-            EditorUserBuildSettings.switchNVNDrawValidation_Heavy = switchNVNDrawValidationHeavy;
-            EditorUserBuildSettings.switchEnableMemoryTracker = switchEnableMemoryTracker;
-            EditorUserBuildSettings.switchWaitForMemoryTrackerOnStartup = switchWaitForMemoryTrackerOnStartup;
-            EditorUserBuildSettings.switchEnableDebugPad = switchEnableDebugPad;
-            EditorUserBuildSettings.switchRedirectWritesToHostMount = switchRedirectWritesToHostMount;
-            EditorUserBuildSettings.switchHTCSScriptDebugging = switchHtcsScriptDebugging;
-            EditorUserBuildSettings.switchUseLegacyNvnPoolAllocator = switchUseLegacyNvnPoolAllocator;
+            if (presetVersion > PresetVersion.V2019_2)
+            {
+                EditorUserBuildSettings.selectedQnxOsVersion = selectedQnxOsVersion;
+                EditorUserBuildSettings.selectedQnxArchitecture = selectedQnxArchitecture;
+                EditorUserBuildSettings.selectedEmbeddedLinuxArchitecture = selectedEmbeddedLinuxArchitecture;
+                EditorUserBuildSettings.remoteDeviceInfo = remoteDeviceInfo;
+                EditorUserBuildSettings.remoteDeviceAddress = remoteDeviceAddress;
+                EditorUserBuildSettings.remoteDeviceUsername = remoteDeviceUsername;
+                EditorUserBuildSettings.remoteDeviceExports = remoteDeviceExports;
+                EditorUserBuildSettings.pathOnRemoteDevice = pathOnRemoteDevice;
+                EditorUserBuildSettings.standaloneBuildSubtarget = standaloneBuildSubtarget;
+                EditorUserBuildSettings.webGLBuildSubtarget = webGLBuildSubtarget;
+                EditorUserBuildSettings.androidETC2Fallback = androidETC2Fallback;
+                EditorUserBuildSettings.androidBuildSystem = androidBuildSystem;
+                EditorUserBuildSettings.androidBuildType = androidBuildType;
+                EditorUserBuildSettings.androidCreateSymbols = androidCreateSymbols;
+                EditorUserBuildSettings.wsaUWPBuildType = wsaUWPBuildType;
+                EditorUserBuildSettings.wsaUWPSDK = wsaUWPSDK;
+                EditorUserBuildSettings.wsaMinUWPSDK = wsaMinUWPSDK;
+                EditorUserBuildSettings.wsaArchitecture = wsaArchitecture;
+                EditorUserBuildSettings.wsaUWPVisualStudioVersion = wsaUWPVisualStudioVersion;
+                EditorUserBuildSettings.overrideMaxTextureSize = overrideMaxTextureSize;
+                EditorUserBuildSettings.overrideTextureCompression = overrideTextureCompression;
+                EditorUserBuildSettings.buildWithDeepProfilingSupport = buildWithDeepProfilingSupport;
+                EditorUserBuildSettings.symlinkSources = symlinkSources;
+                EditorUserBuildSettings.iOSXcodeBuildConfig = iOSXcodeBuildConfig;
+                EditorUserBuildSettings.macOSXcodeBuildConfig = macOSXcodeBuildConfig;
+                EditorUserBuildSettings.switchCreateRomFile = switchCreateRomFile;
+                EditorUserBuildSettings.switchEnableRomCompression = switchEnableRomCompression;
+                EditorUserBuildSettings.switchSaveADF = switchSaveAdf;
+                EditorUserBuildSettings.switchRomCompressionType = switchRomCompressionType;
+                EditorUserBuildSettings.switchRomCompressionLevel = switchRomCompressionLevel;
+                EditorUserBuildSettings.switchRomCompressionConfig = switchRomCompressionConfig;
+                EditorUserBuildSettings.switchNVNGraphicsDebugger = switchNVNGraphicsDebugger;
+                EditorUserBuildSettings.generateNintendoSwitchShaderInfo = generateNintendoSwitchShaderInfo;
+                EditorUserBuildSettings.switchNVNShaderDebugging = switchNVNShaderDebugging;
+                EditorUserBuildSettings.switchNVNDrawValidation_Light = switchNVNDrawValidationLight;
+                EditorUserBuildSettings.switchNVNDrawValidation_Heavy = switchNVNDrawValidationHeavy;
+                EditorUserBuildSettings.switchEnableMemoryTracker = switchEnableMemoryTracker;
+                EditorUserBuildSettings.switchWaitForMemoryTrackerOnStartup = switchWaitForMemoryTrackerOnStartup;
+                EditorUserBuildSettings.switchEnableDebugPad = switchEnableDebugPad;
+                EditorUserBuildSettings.switchRedirectWritesToHostMount = switchRedirectWritesToHostMount;
+                EditorUserBuildSettings.switchHTCSScriptDebugging = switchHtcsScriptDebugging;
+                EditorUserBuildSettings.switchUseLegacyNvnPoolAllocator = switchUseLegacyNvnPoolAllocator;
+            }
+
+            if (presetVersion < LatestVersion)
+            {
+                // As we already applied the supported properties' values, this will just retrieve the new ones
+                // from the current build settings values
+                OverwriteWithCurrentBuildSettings();
+            }
         }
     }
 }
